@@ -1,0 +1,11 @@
+<script setup lang="ts">
+import {{entityPascal}}Form from '~/components/{{entity}}/{{entityPascal}}Form.vue'
+</script>
+
+<template>
+  <div :data-testid="'{{testIdModule}}-create-page'">
+    <DataPageHeader test-id="{{testIdModule}}-create-page-header" :title="$t('Create {{title}}')" />
+    <{{entityPascal}}Form />
+  </div>
+</template>
+

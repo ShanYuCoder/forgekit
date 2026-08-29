@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "package": "@platform/docskit",
+  "bundles": {
+    "architecture-core": [
+      ".cursor/extracts/architecture-core.md",
+      ".cursor/extracts/tpl-arc42-chapter.md",
+      ".cursor/extracts/tpl-module.md",
+      ".cursor/extracts/tpl-deployment.md",
+      ".cursor/extracts/tpl-adr.md",
+      ".cursor/extracts/tpl-cross-cutting.md",
+      ".cursor/extracts/common-scope.md"
+    ],
+    "docskit": [
+      ".cursor/extracts/docskit-phase-hooks.md",
+      ".cursor/extracts/agent-execution-protocol.md",
+      ".cursor/extracts/qa-inbox.md"
+    ]
+  }
+}

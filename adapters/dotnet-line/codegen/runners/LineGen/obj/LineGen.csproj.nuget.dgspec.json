@@ -1,0 +1,71 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/vutv/workspace/codegenkit/adapters/dotnet-line/codegen/runners/LineGen/LineGen.csproj": {}
+  },
+  "projects": {
+    "/home/vutv/workspace/codegenkit/adapters/dotnet-line/codegen/runners/LineGen/LineGen.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/vutv/workspace/codegenkit/adapters/dotnet-line/codegen/runners/LineGen/LineGen.csproj",
+        "projectName": "LineGen",
+        "projectPath": "/home/vutv/workspace/codegenkit/adapters/dotnet-line/codegen/runners/LineGen/LineGen.csproj",
+        "packagesPath": "/tmp/cursor-sandbox-cache/d8cc94d86981b376ae8831057259a101/nuget",
+        "outputPath": "/home/vutv/workspace/codegenkit/adapters/dotnet-line/codegen/runners/LineGen/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/vutv/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Scriban": {
+              "target": "Package",
+              "version": "[7.2.5, )"
+            },
+            "YamlDotNet": {
+              "target": "Package",
+              "version": "[16.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.129/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

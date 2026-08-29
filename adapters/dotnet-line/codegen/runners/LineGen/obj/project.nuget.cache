@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "NlBJddvyCb52TOGJrW195eRfNTfZNUKJmrSYCVQYeTCoO5Vn+0rH/s7KH66XOpr+Xckon3w2U7cPIZ61qU8MHQ==",
+  "success": true,
+  "projectFilePath": "/home/vutv/workspace/codegenkit/adapters/dotnet-line/codegen/runners/LineGen/LineGen.csproj",
+  "expectedPackageFiles": [
+    "/tmp/cursor-sandbox-cache/d8cc94d86981b376ae8831057259a101/nuget/scriban/7.2.5/scriban.7.2.5.nupkg.sha512",
+    "/tmp/cursor-sandbox-cache/d8cc94d86981b376ae8831057259a101/nuget/yamldotnet/16.3.0/yamldotnet.16.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}

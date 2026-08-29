@@ -1,0 +1,11 @@
+# Generated from common-import-csv.bundle.yaml — pnpm spec:split
+id: common-import-csv
+legacyRef:
+  module: common/common
+  function: common-import-csv
+  slice: slices.common-import-csv
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

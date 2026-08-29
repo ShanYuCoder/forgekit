@@ -1,0 +1,11 @@
+# Generated from common-table-action-column.bundle.yaml — pnpm spec:split
+id: common-table-action-column
+legacyRef:
+  module: common/common
+  function: common-table-action-column
+  slice: slices.common-table-action-column
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

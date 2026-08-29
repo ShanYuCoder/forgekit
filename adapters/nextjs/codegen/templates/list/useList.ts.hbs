@@ -1,0 +1,93 @@
+'use client';
+
+import { useCallback, useMemo, useState } from 'react';
+import { create{{entityPascal}}Service } from '@/services/{{entity}}.service';
+import { use{{entityPascal}}Columns } from './use{{entityPascal}}Columns';
+import { use{{entityPascal}}Filters } from './use{{entityPascal}}Filters';
+{{#if hasExportBlock}}
+import { use{{entityPascal}}Export } from './use{{entityPascal}}Export';
+{{/if}}
+import { {{entityCamel}}MockSearch } from '@/mocks/{{entity}}.mock';
+
+/**
+ * {{title}} — list hook (portal-gen).
+ * Mock boundary: replace {{entityCamel}}MockSearch with service.search on /wire.
+ */
+export function use{{entityPascal}}List() {
+  const service = useMemo(() => create{{entityPascal}}Service(), []);
+  const { columns, searchKeys } = use{{entityPascal}}Columns();
+  const { query, setQuery, filters, resetQuery{{#if hasPerPageToolbar}}, perPage, onPerPageChange{{/if}} } = use{{entityPascal}}Filters();
+{{#if hasExportBlock}}
+  const { exportMonth, setExportMonth, exportPending, exportOpenRateReport } = use{{entityPascal}}Export(service);
+{{/if}}
+
+  const [pending, setPending] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [items, setItems] = useState<Record<string, unknown>[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+
+  const load = useCallback(async () => {
+    setPending(true);
+    setErrorMsg(null);
+    try {
+      const result = await {{entityCamel}}MockSearch(query);
+      setItems(result.items);
+      setTotal(result.total ?? result.items.length);
+    } catch (error: unknown) {
+      setErrorMsg((error as Error)?.message ?? 'Cannot load {{title}}');
+      setItems([]);
+      setTotal(null);
+    } finally {
+      setPending(false);
+    }
+  }, [query]);
+
+  const onSearch = useCallback(() => load(), [load]);
+
+  const onReset = useCallback(async () => {
+    resetQuery();
+    setPending(true);
+    setErrorMsg(null);
+    try {
+      const nextQuery = { per_page: {{defaultPageSize}} };
+      const result = await {{entityCamel}}MockSearch(nextQuery);
+      setItems(result.items);
+      setTotal(result.total ?? result.items.length);
+    } catch (error: unknown) {
+      setErrorMsg((error as Error)?.message ?? 'Cannot load {{title}}');
+      setItems([]);
+      setTotal(null);
+    } finally {
+      setPending(false);
+    }
+  }, [resetQuery]);
+
+{{#if hasLoginAs}}
+  const loginAsStoreManager = useCallback(async (manager: { id: number }) => {
+    console.info('loginAsStoreManager', manager.id);
+  }, []);
+{{/if}}
+
+  return {
+    pending,
+    errorMsg,
+    items,
+    total,
+    query,
+    setQuery,
+    filters,
+    columns,
+    searchKeys,
+    load,
+    onSearch,
+    onReset,
+    service{{#if hasPerPageToolbar}},
+    perPage,
+    onPerPageChange{{/if}}{{#if hasExportBlock}},
+    exportMonth,
+    setExportMonth,
+    exportPending,
+    exportOpenRateReport{{/if}}{{#if hasLoginAs}},
+    loginAsStoreManager{{/if}}
+  };
+}

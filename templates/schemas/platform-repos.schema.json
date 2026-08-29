@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/raintr91/platform-dna/blob/main/templates/schemas/platform-repos.schema.json",
+  "title": "Portable platform repository map",
+  "type": "object",
+  "required": ["defaultGroup", "groups", "projects"],
+  "properties": {
+    "$schema": { "type": "string", "format": "uri" },
+    "defaultGroup": { "enum": ["docs", "fe", "be", "monolith", "tests"] },
+    "groups": { "type": "object" },
+    "projects": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["root", "role", "repo", "write"],
+        "properties": {
+          "root": { "const": "." },
+          "role": { "enum": ["docs", "fe", "be", "monolith", "tests"] },
+          "repo": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" },
+          "write": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

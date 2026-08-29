@@ -1,0 +1,104 @@
+# <%= spec.title || spec.id %>
+
+<% if (context.testcases && context.testcases.length) { %>
+- **Testcase plans:** <%= context.testcases.map(tc => '`' + (tc.data.title || tc.data.id || tc.file) + '`').join(' · ') %> (hub: [base_test](https://github.com/raintr91/base_test))
+<% } else { %>
+- **Testcase plans:** [base_test](https://github.com/raintr91/base_test) (`pnpm cases:render` on tests hub) — see docs-hub TESTS-HUB
+<% } %>
+
+<% 
+  const route = spec.ui?.routes?.[0];
+  const path = route?.path || '';
+  const testId = route?.pageTestId || '';
+  let screenLine = '- **Screen:** None';
+  if (path) {
+    const screen = context.renderScreenLink ? context.renderScreenLink(path) : '`' + path + '`';
+    const suffix = testId ? ` · \`${testId}\`` : '';
+    screenLine = `- **Screen:** ${screen}${suffix}`;
+  }
+%>
+<%= screenLine %>
+
+<% if (spec.summary) { %>
+<%= spec.summary %>
+<% } %>
+
+<%
+  const page = {
+    nav: spec.nav,
+    sections: spec.sections,
+    zones: spec.zones,
+    behavior: spec.behavior,
+    actions: spec.actions
+  }
+  const pageMd = context.renderPageComposition(page, { businessOnly: true })
+%>
+<%- pageMd %>
+
+<% 
+  const skipKeys = new Set([
+    'id', 'page-id', 'title', 'summary', 'acceptance', 'ui', 'design', 'legacy', 'review', 'template',
+    'nav', 'sections', 'zones', 'behavior', 'actions', 'grillStatus', 'specOrigin',
+    'status', 'owner', 'schema', 'qa', 'Q&A', 'pendingTechDebt'
+  ]);
+  Object.entries(spec).forEach(([key, value]) => {
+    if (skipKeys.has(key) || value == null) return;
+%>
+## <%= key %>
+
+<% if (typeof value === 'string') { %>
+<%= value %>
+<% } else { %>
+```yaml
+<%= context.stringify(value).trim() %>
+```
+<% } %>
+
+<% }); %>
+
+<% if (spec.pendingTechDebt && spec.pendingTechDebt.length) { %>
+## Pending tech debt
+
+| ID | Status | Summary |
+| --- | --- | --- |
+<% spec.pendingTechDebt.forEach(d => { %>
+| <%= d.id %> | <%= d.status %> | <%= d.summary || '' %> |
+<% }); %>
+
+<% } %>
+
+<% if (spec.review && (spec.review.layoutNotes || spec.review.summary)) { %>
+## Review — layout notes
+
+<% if (spec.review.layoutNotes) { %>
+<% if (Array.isArray(spec.review.layoutNotes)) { %>
+<%= spec.review.layoutNotes.map(n => `- ${n}`).join('\n') %>
+<% } else { %>
+- <%= spec.review.layoutNotes %>
+<% } %>
+<% } %>
+<% } %>
+
+<% if (spec.legacy && (spec.legacy.behaviors?.length || spec.legacy.fields?.length || spec.legacy.evidence?.length)) { %>
+## Legacy evidence
+
+<% if (spec.legacy.behaviors && spec.legacy.behaviors.length) { %>
+### Behaviors
+
+| ID | Fact | Confidence |
+| --- | --- | --- |
+<% spec.legacy.behaviors.forEach(b => { %>
+| <%= b.id || '' %> | `<%= JSON.stringify(b.fact || {}) %>` | <%= b.confidence || '' %> |
+<% }); %>
+<% } %>
+
+<% if (spec.legacy.fields && spec.legacy.fields.length) { %>
+### Fields
+
+| Name | Via | Confidence |
+| --- | --- | --- |
+<% spec.legacy.fields.forEach(f => { %>
+| <%= f.name || '' %> | <%= f.via || '' %> | <%= f.confidence || '' %> |
+<% }); %>
+<% } %>
+<% } %>

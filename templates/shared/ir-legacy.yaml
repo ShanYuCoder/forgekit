@@ -1,0 +1,12 @@
+# Derived from bundle.legacy — grill fact-pass reads this file
+
+id: role-domain-function
+
+legacyRef: null
+
+behaviors: []
+fields: []
+ui: []
+
+evidence: []
+refs: {}

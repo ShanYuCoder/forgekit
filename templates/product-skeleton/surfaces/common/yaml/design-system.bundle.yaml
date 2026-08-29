@@ -1,0 +1,29 @@
+id: design-system-spec
+name: Common Design System (SSOT)
+specOrigin: requirement
+summary:
+  - Global SSOT for UI Metrics and Design Tokens (Typography, Colors, Radii, Spacing).
+  - All feature specs must inherit from these defaults unless an explicit override is requested by Business/BQA.
+  - "Devs: Use Shadcn/Tailwind global config to implement these tokens."
+  - "Testers: Use this document to validate default UI sizes and colors when not explicitly stated in feature specs."
+design:
+  visual:
+    typography:
+      baseFontSize: "16px"
+      smallFontSize: "14px"
+      heading1: "32px"
+      heading2: "24px"
+      fontFamily: "Inter, sans-serif"
+    colors:
+      primary: "Tailwind Blue 600 (#2563eb)"
+      secondary: "Tailwind Slate 500 (#64748b)"
+      background: "White (#ffffff)"
+      textPrimary: "Tailwind Slate 900 (#0f172a)"
+      textSecondary: "Tailwind Slate 500 (#64748b)"
+    spacing:
+      base: "16px"
+      small: "8px"
+      large: "24px"
+    radius:
+      base: "8px"
+      small: "4px"

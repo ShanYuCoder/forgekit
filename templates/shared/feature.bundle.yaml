@@ -1,0 +1,225 @@
+# SSOT — portal-feature-bundle/v1. Split: pnpm spec:split -- <path>
+# Authoring: docs/templates/bundle-authoring.md
+# /spec MUST fill inventory when information exists. grill-* only re-checks gaps/conflicts.
+
+schema: portal-feature-bundle/v1
+page-id: role-domain-function
+title: Feature title
+status: draft
+owner: portal-team
+summary: |
+  - mục tiêu nghiệp vụ (business_goals): [Nêu rõ vấn đề đang giải quyết và giá trị kinh tế/nghiệp vụ mang lại. Viết sâu sắc để Stakeholder hiểu rõ vì sao phải làm.]
+  - các bên liên quan (stakeholders): [Ai dùng, ai hưởng lợi, ai quản lý?]
+  - kịch bản người dùng (user_journey): [Kể câu chuyện người dùng trải qua các bước trên màn hình bằng ngôn ngữ đời thường.]
+  - bối cảnh (context):
+    - description: [Phân tích sâu luồng nghiệp vụ chi tiết]
+    - input: [Dữ liệu đầu vào. CHÚ Ý liên kết cross-page / cross-module nếu có]
+    - output: [Kết quả đầu ra]
+  - cách giải quyết (solution): [Tuỳ chọn. Ghi kỹ thuật phức tạp nếu có.]
+
+specOrigin: requirement # requirement | legacy
+
+grillStatus:
+  bqaFacts: pending # /grill-bqa Step A — inventory locked
+  bqaOpen: pending # /grill-bqa Step B — member wizard answers applied into design (no leftover Q list in YAML)
+  dev: pending
+  full: not_required
+
+# Design v1 — author ui.list|form|detail + design.zones.items here.
+# Do NOT put portal:gen flats in spec: ui.filters / ui.columns / composition / testIds belong in gen.
+spec:
+  actors: []
+  entities: []
+  relationships: []
+  requirements:
+    - "[Ghi chú: Bắt buộc định nghĩa State Machine, và UI Permissions vào thuộc tính states của từng item trong design.sections. KHÔNG liệt kê chung chung ở đây]"
+    - "Edge Cases: [Bắt buộc định nghĩa ngoại lệ như lỗi luồng, data hỏng, concurrency]"
+  ui:
+    routes: []
+    #   - path: /feature
+    #     pageTestId: feature-page
+    validationMessages:
+      required: This field is required
+    list:
+      columns: []
+      # - key: status
+      #   title: Status
+      #   purpose: "Cho user thấy tài khoản còn hoạt động hay đã khóa"
+      #   widget: chip
+      #   color: "#common:status-chip"
+      #   sortable: false
+      #   render: custom
+      filters: []
+      # - name: keyword
+      #   label: Search
+      #   purpose: "Tìm nhanh bản ghi theo tên hoặc mã"
+      #   type: string
+      #   widget: search
+      #   placeholder: Search by name or code
+      rowActions: []
+      bulkActions: []
+      pagination:
+        defaultPageSize: 20
+        pageSizeOptions: [20, 50, 100]
+      emptyState:
+        title: No data
+        message: No records found.
+    form:
+      layout:
+        mode: single-column # single-column | two-column | custom
+      sections: []
+      fields: []
+      # - key: name
+      #   label: Name
+      #   purpose: "Tên hiển thị trên hồ sơ"
+      #   type: string
+      #   widget: text
+      #   required: true
+      submit:
+        label: Save
+      emptyState:
+        title: No form fields
+        message: This form has not been configured yet.
+    detail:
+      header:
+        badges: []
+      sections: []
+      actions: []
+      emptyState:
+        title: No detail sections
+        message: This detail page has not been configured yet.
+  acceptance: []
+
+# Dev-grill / portal:gen — /grill-dev MUST fill codegen.profile (codegenkit reads ir/design.yaml).
+# Empty profile = grill incomplete; codegenkit gen MUST fail.
+gen:
+  codegen:
+    profile: "" # REQUIRED: auth | change-password | public | not-found | error | list | create | admin-crud
+    entity: ""
+    module: ""
+  tags: []
+    # list: "#gen:test-schema" "#gen:test-service"
+    # create: "#gen:test-validation"
+    # "#common:form-validation" "#common:i18n"
+  ui:
+    filters: []
+    columns: []
+    composition: null
+    testIds: null
+
+# legacy: chỉ khi specOrigin: legacy và có evidence. Split bỏ stub rỗng.
+
+design:
+  inherits: null
+  shell:
+    tag: "#shell: DataListPage" # AuthPage | AppShell
+  patterns: []
+  # Chrome — điền theo từng page (không cố định login).
+  # Sidebar/breadcrumb: bật khi màn nằm trong app shell; full-bleed thì enabled: false.
+  nav:
+    sidebar:
+      enabled: false
+      # position: left
+      # purpose: ""
+      # levels: []   # cây đa cấp: id, label, href, active, children[]
+    breadcrumb: []  # [{ label, href }]
+
+  # Cây layout động — lồng sections[] tùy page. Không copy cứng 1 màn mẫu.
+  # LƯU Ý ĐẶC BIỆT VỀ ĐA NGÔN NGỮ (i18n):
+  # 1. Các thuộc tính hiển thị UI (như `label`, `value`, `copy.placeholder`, text của component lib): BẮT BUỘC dùng cho i18n (sẽ được map với file ngôn ngữ).
+  # 2. Các thuộc tính giải thích/cấu trúc (như `name`, `description`, `purpose`): Chỉ dùng cho BA/Dev, KHÔNG dùng để render UI, KHÔNG mang đi dịch.
+  # Tùy thuộc vào `kind` mà khai báo cho đúng bản chất, KHÔNG dùng `label` để mô tả một node ẩn (ví dụ: container).
+  # BA: name, description, purpose, copy, position, color, visual (width/height/max-*/scroll), interaction, validation (mặt UI)
+  # Tech: kind/widget, tags, extract, bind (field/hidden/apiRef), apiRefs, hidden, testId, states
+  # kind ví dụ: header | container | card | form | sidebar | toolbar | table | dialog | other | input | text
+  sections: []
+  
+  # Ví dụ 1: Nhóm cấu trúc (Không có text hiển thị UI -> Không i18n)
+  # - id: form_login_container
+  #   name: Login Form Container
+  #   kind: container
+  #   description: Container chứa toàn bộ form đăng nhập
+  #   purpose: Nhóm layout và css cho phần login
+  #   visual:
+  #     background: ""
+  #     width: ""
+  #     padding: ""
+  #   tags: []              # vd ["#needs-component: BlockName"]
+  #   sections: []
+  
+  # Ví dụ 2: Node text (Có text hiển thị UI -> Cần i18n)
+  # - id: title_login
+  #   name: Login Title
+  #   kind: text
+  #   value: "Đăng nhập hệ thống" # Text này sẽ được map i18n
+  #   visual: { color: "primary" }
+  
+  # Ví dụ 3: Component nhập liệu (Có placeholder/label -> Cần i18n)
+  # - id: user_name_field
+  #   name: Username Field
+  #   kind: input
+  #   description: Trường nhập username
+  #   purpose: User nhập tên đăng nhập
+  #   label: "Tên đăng nhập" # Sẽ i18n
+  #   copy: 
+  #     placeholder: "Nhập tên đăng nhập..." # Sẽ i18n
+  #   validation: { required: true }
+  #   bind: { field: username }
+  
+  # Ví dụ 4: Component tương tác (Có actions xử lý sự kiện)
+  # - id: btn_submit_login
+  #   name: Submit Login Button
+  #   kind: button
+  #   label: "Đăng nhập" # Sẽ i18n
+  #   purpose: Nút xác nhận đăng nhập
+  #   actions:
+  #     - click: "Nếu form validate ok thì call api login. Đang gọi API -> khóa nút và hiện spinner"
+  # - id: btn_forgot_password
+  #   name: Forgot Password Link
+  #   kind: button
+  #   label: "Quên mật khẩu?" # Sẽ i18n
+  #   actions:
+  #     - click: "Di chuyển sang page Quên mật khẩu"
+
+  zones: []
+  # Fallback phẳng nếu chưa cần cây lồng. Ưu tiên sections[] khi có header/card/form.
+  behavior:
+    create: { enabled: true, surface: page }
+    update: { enabled: true, surface: page }
+    delete: { enabled: true, mode: confirm_dialog }
+  actions: []
+  # Gọi API chỉ khai trên action / item (không còn spec.api trên bundle).
+  # Mới: apiRefs (+ sau /api-spec sẽ có sibling api/<seq>/). Tái sử dụng: tags #reuse-api + reuseFrom.
+  # - id: submit_form
+  #   label: Save
+  #   purpose: "Lưu bản ghi và quay về danh sách"
+  #   variant: primary
+  #   position: form_footer
+  #   trigger: button_click
+  #   apiRefs: [feature.create]   # tech — unique API của màn này
+  #   tags: []                    # "#reuse-api" khi dùng 01 đã có
+  #   reuseFrom: null             # path …/01-backend-spec.yaml (khi #reuse-api)
+  #   onSuccess:
+  #     - Navigate to list page
+  #   onCommonError:
+  #     override: false
+  #     notes: "Inherit #ui-common:error-handler"
+  #   onSpecificError:
+  #     - condition: "422 Validation"
+  #       notes: "Show inline field errors"
+  #     - condition: "403 IDOR"
+  #       notes: "Redirect to safety page, show warning"
+
+  # Đa ngôn ngữ (i18n): Danh sách các bản dịch của màn hình (nếu có). Key là text mặc định, value là ngôn ngữ dịch.
+  i18n: {}
+  #  "login":
+  #    vi: "Đăng nhập"
+  #    en: "Login"
+
+review:
+  summary: ""
+  layoutNotes: []
+
+_meta:
+  generatedBy: null
+  sourceRevision: null

@@ -1,0 +1,65 @@
+# SSOT — portal-feature-bundle/v1 · Split: pnpm spec:split -- <path>
+# Authoring: templates/bundle-authoring.md
+
+schema: portal-feature-bundle/v1
+id: role-domain-function
+title: Line client feature
+status: draft
+owner: line-team
+summary: Shop-floor screen — clients.line block
+specOrigin: requirement
+
+grillStatus:
+  bqaFacts: pending
+  bqaOpen: pending
+  dev: pending
+  full: not_required
+
+contractRef:
+  portalIrSpec: product/surfaces/.../CMP-*/<slug>/code/W-*/ir/spec.yaml (or --id)
+
+spec:
+  clients:
+    line:
+      profile: kiosk
+      screens:
+        - id: screen-id
+          route: module/action
+          automationIds:
+            page: module-page
+            submit-btn: module-submit-btn
+      devices:
+        - badgeReader
+      api:
+        endpoints:
+          actionName:
+            method: POST
+            path: /module/action
+
+gen:
+  codegen:
+    profile: kiosk
+    entity: entity-name
+    module: factory
+
+legacy:
+  legacyRef: null
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+
+design:
+  inherits: null
+  shell:
+    tag: "#shell: KioskCheckIn"
+  patterns: []
+  zones: []
+  behavior: {}
+  actions: []
+
+review:
+  summary: ""
+  layoutNotes: []
+

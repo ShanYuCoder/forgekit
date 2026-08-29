@@ -1,0 +1,26 @@
+<script setup lang="ts">
+import { use{{entityPascal}}Form } from '~/composables/{{entity}}/use{{entityPascal}}Form'
+
+const { onSubmit, errors, apiError, isSubmitting } = use{{entityPascal}}Form()
+</script>
+
+<template>
+  <form class="space-y-4 max-w-lg" @submit.prevent="onSubmit" :data-testid="'{{testIdModule}}-form'">
+{{#each formFields}}
+{{#if hidden}}
+    <input type="hidden" name="{{key}}" :data-testid="'{{../testIdModule}}-{{key}}-hidden'" />
+{{else}}
+    <FormField
+      test-id="{{../testIdModule}}-{{key}}-input"
+      name="{{key}}"
+      :label="$t('{{label}}')"
+      :error="errors.{{key}}"
+    />
+{{/if}}
+{{/each}}
+    <p v-if="apiError" :data-testid="'{{testIdModule}}-form-error-alert'">\{{ apiError }}</p>
+    <Button test-id="{{testIdModule}}-form-submit-btn" type="submit" :disabled="isSubmitting">
+      Save
+    </Button>
+  </form>
+</template>

@@ -1,0 +1,34 @@
+# Tech SSOT after split — FE/BE/testkit read this file, not ir/spec.yaml.
+# codegen.profile is REQUIRED for codegenkit (from bundle.gen).
+
+id: role-domain-function
+
+codegen:
+  profile: "" # list | create | admin-crud | …
+  entity: ""
+  module: ""
+
+tags: []
+
+inherits: null
+
+shell:
+  tag: "#shell: DataListPage"
+
+patterns: []
+
+nav:
+  sidebar:
+    enabled: false
+  breadcrumb: []
+
+sections: []
+zones: []
+# Nested sections: visual/interaction/validation/apiRefs/hidden. Codegen đọc file này, không đọc MD.
+
+behavior:
+  create: { enabled: true, surface: page }
+  update: { enabled: true, surface: page }
+  delete: { enabled: true, mode: confirm_dialog }
+
+deviations: []

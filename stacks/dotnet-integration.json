@@ -1,0 +1,66 @@
+{
+  "stack": "dotnet-integration",
+  "mode": "brownfield",
+  "commands": {
+    "genDry": [
+      "codegenkit",
+      "api-gen:dry",
+      "--adapter=dotnet-integration",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "gen": [
+      "codegenkit",
+      "api-gen",
+      "--adapter=dotnet-integration",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "registryValidate": [
+      "codegenkit",
+      "api-registry",
+      "--adapter=dotnet-integration"
+    ]
+  },
+  "registries": [
+    "registries/dotnet-integration.codegen.registry.json",
+    "registries/codegen.registry.json",
+    "registries/common.registry.json"
+  ],
+  "gapSources": [
+    "**/generated/HANDOFF.md",
+    "**/generated/UNIT-HANDOFF.md",
+    "**/generated/codegen.manifest.json"
+  ],
+  "specRoots": [],
+  "templates": {
+    "root": "adapters/dotnet-integration/codegen",
+    "engine": "scriban",
+    "note": "SSOT in Codegenkit; product has no root codegen/"
+  },
+  "dsl": {
+    "ssot": "product-repo",
+    "lanes": {
+      "be": {
+        "registries": [
+          "registries/dotnet-integration.codegen.registry.json",
+          "registries/common.registry.json"
+        ],
+        "genKeys": [
+          "genDry",
+          "gen"
+        ],
+        "needsTags": [
+          "#needs-endpoint",
+          "#needs-dto"
+        ],
+        "note": "Integration BE — Codegenkit CLI; MCP indexes registries only"
+      }
+    }
+  },
+  "vocabularies": {
+    "registryTags": "artifactgraph/lexicon/registry-tags.en.txt"
+  }
+}

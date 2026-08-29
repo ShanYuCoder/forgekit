@@ -1,0 +1,53 @@
+# Generated from common-pagination.bundle.yaml — pnpm spec:split
+id: common-pagination
+title: Common pagination
+status: draft
+owner: portal-team
+summary: Chuẩn pagination dưới table, dùng page numbers + ellipsis thay vì text generic `Page x of y`.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+layout:
+  position: below table
+  alignment: center
+  style:
+    - Flat outline buttons, border nhẹ, không shadow.
+    - Active page dùng text/border primary `#4EAAFF` hoặc background primary nhạt.
+    - Disabled previous/next vẫn giữ footprint để layout không nhảy.
+controls:
+  previous:
+    content: icon + text
+    icon: ChevronLeft
+    text: 前へ
+    ariaLabel: 前のページ
+  next:
+    content: icon + text
+    icon: ChevronRight
+    text: 次へ
+    ariaLabel: 次のページ
+  pageNumbers:
+    window: current page +/- 2
+    firstLast: show first/last when outside window
+    ellipsis: show `...` when gap exists
+behavior:
+  query:
+    - Pagination phải giữ search params hiện tại.
+    - Page change gọi list service/composable, không lọc local-only nếu API contract có pagination.
+  perPage:
+    - Per-page select và page summary không nằm trong pagination bar dưới table.
+    - Per-page select nằm ở toolbar/header table góc phải theo `common-list-toolbar`, copy giữ `表示 ... 件 / ページ`.
+    - Đổi per-page reset page về 1.
+testIds:
+  pagination: "{module}-pagination"
+  previous: "{module}-pagination-prev-btn"
+  next: "{module}-pagination-next-btn"
+  pageButton: "{module}-pagination-page-{page}"
+acceptance:
+  - Không hiển thị copy English kiểu `Page 1 of 4` trong admin UI.
+  - Previous/next dùng icon + text tiếng Nhật `前へ`/`次へ`.
+  - Có thể preview ít nhất 2 page bằng mock data.
+  - Pagination dưới table chỉ gồm previous, page numbers/ellipsis, next; không hiển thị `表示 ... 件 / ページ` hoặc page summary tại đây.
+  - Pagination dưới table, căn giữa, page numbers observable bằng testId.

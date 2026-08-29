@@ -1,0 +1,162 @@
+# Portal-gen-ready spec — output of /grill-docs (not round-1 /spec).
+# Design v1 template: docs/templates/design-spec.yaml
+# Enrichment rules: .cursor/extracts/codegen/readiness.md
+
+id: feature-slug
+title: Feature Title
+status: draft
+owner: portal-team
+summary: Short business summary for BA, QA, dev, and AI.
+
+# pnpm portal:gen:dry --spec <this-file>  (must pass before /prototype)
+# Tags: .cursor/extracts/codegen/tags.md
+codegen:
+  profile: list # list | create | edit | auth | change-password | public | not-found | error
+  entity: entitySingular # hotel
+  module: modulePlural # hotels — testId prefix, mock id
+  skip: [] # models | service | composable | page | mock | validation
+
+tags: []
+# Design registry (grill — list default):
+# - "#shell: DataListPage"
+# - "#pattern: CRUD"
+# - "#style: shadcn/ui"
+# - "#needs-component: cell-status:MoStatusChip:label"
+# - "#needs-ui: Repeater"
+# - "#common:export-csv"  # logic — also add marks[] below
+# - "#custom-slot: cell-status"
+# - "#manual-composable: export-csv"
+# - "#skip-codegen: page"
+
+# Member / grill-confirmed marks (/platform-mark) — optional until promote common
+marks: []
+# - id: MK-STATUS-001
+#   kind: needs-component
+#   tag: "#needs-component: cell-status:MoStatusChip:label"
+#   registryId: MoStatusChip
+#   reason: "Cột status render custom"
+#   source: grill-dev
+# - id: MK-EXPORT-001
+#   kind: common
+#   tag: "#common:export-csv"
+#   registryId: export.csv
+#   reason: "Toolbar export lặp list khác"
+#   source: platform-mark
+
+requirements:
+  - id: REQ-FEATURE-001
+    title: Main behavior
+    description: User can complete the main behavior.
+    priority: must
+
+ui:
+  # Canonical page profiles. Keep these as source-of-truth; gen-ready blocks below are derived in grill.
+  validationMessages:
+    required: This field is required
+    email: Email format is invalid
+    phone: Phone number format is invalid
+    minLength: Must be at least {n} characters
+    maxLength: Must be at most {n} characters
+    min: Must be at least {n}
+    max: Must be at most {n}
+    pattern: Invalid format
+  list:
+    # titleField: name
+    # subtitleField: code
+    columns: []
+    filters: []
+    rowActions: []
+    bulkActions: []
+    pagination:
+      defaultPageSize: 20
+      pageSizeOptions: [20, 50, 100]
+    emptyState:
+      title: No data
+      message: No records found.
+  form:
+    layout:
+      mode: single-column # single-column | two-column | custom
+    sections: []
+    fields:
+      # - key: name
+      #   label: Name
+      #   type: string
+      #   widget: text
+      #   required: true
+      #   validation:
+      #     minLength: 1
+      #     maxLength: 255
+      #   messages:
+      #     required: Name is required.
+      #     maxLength: Name must be 255 characters or less.
+      # - key: status
+      #   label: Status
+      #   type: int
+      #   widget: select
+      #   source:
+      #     kind: enum
+      #     ref: status
+      #   required: true
+      #   messages:
+      #     required: Status is required.
+      # - key: chain_id
+      #   label: Chain
+      #   type: int
+      #   widget: select
+      #   source:
+      #     kind: relation
+      #     ref: chains
+      #     valueKey: id
+      #     labelKey: name
+      #   nullable: true
+    submit:
+      label: Save
+      testId: feature-save-btn
+    emptyState:
+      title: No form fields
+      message: This form has not been configured yet.
+  detail:
+    header:
+      # titleField: name
+      # subtitleField: code
+      badges: []
+    sections: []
+    actions: []
+    emptyState:
+      title: No detail sections
+      message: This detail page has not been configured yet.
+  composition:
+    pattern: DataListPage # DataListPage | custom
+    overrideCommonPattern: false
+  routes:
+    - path: /feature
+      pageTestId: feature-page
+  filters: []
+  # - name: name
+  #   label: Name
+  #   type: text_field # text_field | select | number_field | date | ...
+  #   placeholder: Optional
+  columns: []
+  # - key: name
+  #   title: Name
+  #   sortable: true
+  #   render: default # default | custom
+  #   component: MoStatusChip # optional — auto-wires cell slot (Nuxt auto-import)
+  #   componentProp: label # prop bound from slot `value` (default: value)
+  testIds:
+    module: feature # kebab-case prefix — portal:gen emits {module}-page, -table, …
+    required: [] # canonical E2E ids — grill fills; testcase mirrors this list
+    # patterns: # dynamic ids from gen (e.g. cell slot buttons)
+    #   - id: action-login-as
+    #     template: "{module}-cell-managers-login-as-{managerId}"
+  # create profile only:
+  #   fields are declared in ui.form.fields above.
+
+acceptance:
+  - Feature page renders successfully.
+  - Main behavior works end to end.
+
+notes:
+  - YAML is the source of truth. Render Markdown with pnpm docs:render.
+  - Generate code with pnpm portal:gen --spec <path>.
+

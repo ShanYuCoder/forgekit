@@ -1,0 +1,60 @@
+schema: portal-feature-bundle/v1
+id: common-breadcrumb-flow
+title: Common breadcrumb flow
+status: draft
+owner: portal-team
+summary: Mọi dashboard page có breadcrumb khớp menu cha-con và action chain; breadcrumb trên page title.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  principles:
+    - Breadcrumb bắt buộc trên list, detail, edit, create khi có sidebar parent.
+    - Thứ tự header — breadcrumb rồi page title rồi content.
+    - Create không phải menu con — trail đi qua list (toolbar create).
+  references:
+    - .cursor/extracts/common-breadcrumb-flow.md
+    - docs/features/common/common-list-page.spec.yaml
+  hierarchy:
+    - sidebarParent
+    - sidebarChildOrList
+    - actionPages
+  examples:
+    hotelList: ホテル管理 > ホテル一覧
+    hotelDetail: ホテル管理 > ホテル一覧 > {name}
+    hotelEdit: ホテル管理 > ホテル一覧 > {name} > 編集
+    hotelCreate: ホテル管理 > ホテル一覧 > 新規作成
+  grill:
+    bqa: labels, entity display field, create label
+    dev: ui.routes chain, route meta, wire-only menu API
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-breadcrumb-flow
+    slice: slices.common-breadcrumb-flow
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Mọi dashboard page có breadcrumb khớp menu cha-con và action chain; breadcrumb trên page title.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

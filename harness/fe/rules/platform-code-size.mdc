@@ -1,0 +1,40 @@
+---
+description: Platform — 200 lines/file hard cap, ~20 lines/function; split when exceeded
+globs: "{app,src,pages,components,composables,hooks,services,stores,models,validations,tests}/**/*.{vue,ts,tsx}"
+alwaysApply: false
+---
+
+# Code Size
+
+## Limits
+
+| Metric | Hard cap | Stretch max | Exempt |
+|--------|----------|-------------|--------|
+| Lines / file | 200 | 220–250 (edge case, <10% files) | `*.mock.ts` |
+| Lines / function | ~20 | — | — |
+
+Mock files (`*.mock.ts`) are exempt from both line limits and unit test coverage
+requirements — they are temporary and will be removed when wiring real APIs.
+
+## Proactive Component Splitting
+
+Không chờ đến khi file chạm mốc 200 dòng. Việc tách component cần được quyết định ngay từ lúc duyệt Spec:
+
+- **Nếu Page chỉ có 1 block chính** (vd: 1 Table list): Dùng template chuẩn của page, không tách.
+- **Nếu Page có từ 2 blocks trở lên** (vd: 1 Card + 1 Tab, hoặc 2 Tables): Sinh riêng component cho mỗi block, Page chỉ đóng vai trò layout (ghép các block lại). Gắn tag `#needs-component: TênWidget` cho từng block.
+- **Quy tắc tuyệt đối cho Form**: Bất cứ khi nào Spec xuất hiện một **Form** (không phân biệt là trang Create, Edit, hay một form nhỏ nằm trong Modal/Tab), hệ thống bám chặt rule của SPA: Tự động tách thành một Component độc lập hoàn toàn (Component UI, Hook logic, Zod Schema, và Service). Component này có thể "vác đi đâu cũng dùng được full đủ". File Page chỉ đóng vai trò host.
+
+Split in the same PR when exceeded line limits.
+
+## Next.js ↔ Nuxt4 split convention
+
+| Concern | Nuxt4 composable | Next.js hook |
+|---------|-----------------|--------------|
+| List data + pagination | `composables/xxx/useXxxList.ts` | `hooks/xxx/useXxxList.ts` |
+| Column definitions | `composables/xxx/useXxxColumns.ts` | `hooks/xxx/useXxxColumns.ts` |
+| Filter config + search/reset | `composables/xxx/useXxxFilters.ts` | `hooks/xxx/useXxxFilters.ts` |
+| Export logic | `composables/xxx/useXxxExport.ts` | `hooks/xxx/useXxxExport.ts` |
+| Form submit | `composables/xxx/useXxxForm.ts` | `hooks/xxx/useXxxForm.ts` |
+
+No padding files with blank lines. Detailed component-split conventions are
+product-owned because Nuxt and Next layouts differ.

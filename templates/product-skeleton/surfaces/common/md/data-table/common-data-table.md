@@ -1,0 +1,91 @@
+# Common data table
+
+- **Testcase:** `#`
+- **Screen:** `#`
+
+Chuẩn table dữ liệu cho admin portal, tối ưu màn nhiều cột, giữ row cân bằng và action dễ thao tác.
+
+## status
+
+draft
+
+## owner
+
+portal-team
+
+## layout
+
+```yaml
+container:
+  - Table phải nằm trong container có horizontal overflow khi nhiều cột.
+  - Không ép table co cột quá nhỏ khiến text wrap tự do.
+table:
+  density: compact
+  minWidth: page hoặc component quyết định theo số cột
+  header: background muted nhẹ, text semibold
+  row:
+    height: 40-48px mặc định
+    hover: background muted/nhẹ
+    striped: optional, chỉ dùng khi page spec yêu cầu hoặc table nhiều dòng dễ đọc hơn
+cell:
+  padding: px-3 py-2
+  defaultOverflow: truncate-tooltip
+  defaultAlign: left
+```
+
+## columns
+
+```yaml
+reserved:
+  action:
+    width: fixed
+    overflow: nowrap
+    sticky: optional khi table rất rộng
+  status:
+    width: compact
+    renderer: status-chip
+  id:
+    overflow: nowrap
+  date:
+    overflow: nowrap
+  numeric:
+    align: right
+```
+
+## overflowModes
+
+```yaml
+nowrap: Không xuống dòng, dùng cho ID/code/date/status/action.
+truncate-tooltip: Một dòng, ellipsis, hover/focus xem full text; default cho
+  name/email/url/title ngắn.
+wrap-2-lines: Tối đa 2 dòng, dùng cho subject/title cần đọc thêm nhưng không phá row.
+wrap-free: Chỉ dùng cho nội dung dài thật sự như message body/note/report
+  detail, không dùng mặc định trong list.
+```
+
+## testIds
+
+```yaml
+table: "{module}-table"
+row: "{module}-row"
+cell: optional "{module}-{column}-cell"
+```
+
+
+## Design intent
+
+**Inherits:** `admin-crud`
+
+**Shell:** #shell: DataPage
+
+**Patterns:**
+
+- #pattern: CRUD
+
+### Zones
+
+| ID | Nhãn | Vị trí | Container | Ghi chú |
+| --- | --- | --- | --- | --- |
+| main | Nội dung chính |  |  |  |
+
+## Legacy evidence

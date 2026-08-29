@@ -1,0 +1,45 @@
+import type { SearchFilterConfig } from '~/components/molecules/form/searchFilterTypes'
+
+/**
+ * {{title}} — filter config + search/reset logic (portal-gen).
+ */
+export function use{{entityPascal}}Filters() {
+  const query = ref<Record<string, unknown>>({ per_page: {{defaultPageSize}} })
+
+  const filters = computed<SearchFilterConfig[]>(() => [
+{{#each filters}}
+    {
+      name: '{{name}}',
+      label: t('{{label}}'),
+      type: '{{type}}'{{#if placeholder}},
+      placeholder: t('{{placeholder}}'){{/if}}
+    }{{#unless @last}},{{/unless}}
+{{/each}}
+  ])
+
+{{#if hasPerPageToolbar}}
+  const perPage = computed({
+    get: () => Number(query.value.per_page ?? {{defaultPageSize}}),
+    set: (value: number) => {
+      query.value = { ...query.value, per_page: value, page: 1 }
+    }
+  })
+
+  function onPerPageChange() {
+    // caller should trigger load() after this
+  }
+{{/if}}
+
+  function resetQuery() {
+    query.value = { per_page: {{defaultPageSize}} }
+    return query.value
+  }
+
+  return {
+    query,
+    filters,
+    resetQuery{{#if hasPerPageToolbar}},
+    perPage,
+    onPerPageChange{{/if}}
+  }
+}

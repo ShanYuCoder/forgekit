@@ -1,0 +1,18 @@
+# Business prose (requirements, acceptance, page inventory). Not codegen input.
+# Layout here is labels/purpose/validation — no element ids or #needs-component.
+# Tech SSOT is sibling ir/design.yaml.
+
+page-id: role-domain-function
+title: Feature title
+status: draft
+owner: portal-team
+summary: Short summary
+
+specOrigin: requirement
+
+actors: []
+requirements: []
+acceptance: []
+
+# Filled by spec:split from qa/open/QA-<id>-NNNN.yaml (comma-separated). Omit when none.
+# "Q&A": QA-role-domain-function-0001, QA-role-domain-function-0002

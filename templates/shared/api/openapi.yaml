@@ -1,0 +1,144 @@
+openapi: 3.1.0
+info:
+  title: Feature API
+  version: 0.1.0
+  description: OpenAPI YAML generated from backend phase 3b spec.
+servers:
+  - url: http://localhost
+    description: Local API
+tags:
+  - name: Feature
+  - name: call-external
+    description: Endpoint depends on a third-party integration.
+  - name: cross-entity-service
+    description: Endpoint uses a reviewed internal cross-entity service.
+paths:
+  /admin/features:
+    get:
+      operationId: featureSearch
+      summary: List feature entities
+      tags:
+        - Feature
+      parameters:
+        - in: query
+          name: filter[name]
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feature entity collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureEntityCollection'
+components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized - Token missing, expired, or invalid (#err:unauthorized)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: UNAUTHORIZED
+            message: Unauthenticated or session expired.
+    PermissionError:
+      description: Forbidden - Insufficient permissions (#err:permission-denied)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: PERMISSION_DENIED
+            message: You do not have permission to perform this action.
+    IdorViolationError:
+      description: Forbidden - Cross-tenant IDOR violation (#err:idor-violation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: TENANT_IDOR_VIOLATION
+            message: Cross-tenant resource access forbidden.
+    NotFoundError:
+      description: Resource Not Found (#err:not-found)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: RESOURCE_NOT_FOUND
+            message: The requested entity was not found.
+    ValidationError:
+      description: Unprocessable Entity - Validation failed (#err:validation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+          example:
+            code: VALIDATION_ERROR
+            message: The given data was invalid.
+            errors:
+              email:
+                - The email must be a valid email address.
+    ServerError:
+      description: Internal System Error (#err:system)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: INTERNAL_SERVER_ERROR
+            message: An unexpected internal server error occurred.
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: ERROR_CODE
+        message:
+          type: string
+          example: Human-readable error description.
+    ValidationErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+        - errors
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: The given data was invalid.
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    FeatureEntity:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Example
+    FeatureEntityCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureEntity'
+

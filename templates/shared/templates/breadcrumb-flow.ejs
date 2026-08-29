@@ -1,0 +1,45 @@
+# [Flow] <%= spec.title || spec.id %>
+
+<% if (context.testcases && context.testcases.length) { %>
+- **Testcase plans:** <%= context.testcases.map(tc => '`' + (tc.data.title || tc.data.id || tc.file) + '`').join(' · ') %> (hub: [base_test](https://github.com/raintr91/base_test))
+<% } else { %>
+- **Testcase plans:** [base_test](https://github.com/raintr91/base_test) (`pnpm cases:render` on tests hub) — see docs-hub TESTS-HUB
+<% } %>
+
+<% 
+  const route = spec.ui?.routes?.[0];
+  const path = route?.path || '';
+  const testId = route?.pageTestId || '';
+  let screenLine = '- **Screen:** None';
+  if (path) {
+    const screen = context.renderScreenLink ? context.renderScreenLink(path) : '`' + path + '`';
+    const suffix = testId ? ` · \`${testId}\`` : '';
+    screenLine = `- **Screen:** ${screen}${suffix}`;
+  }
+%>
+<%= screenLine %>
+
+> [!NOTE]
+> This document was rendered using the specialized **breadcrumb-flow** template.
+
+<% if (spec.summary) { %>
+<%= spec.summary %>
+<% } %>
+
+<% 
+  // Render other spec sections
+  const skipKeys = new Set(['id', 'title', 'summary', 'acceptance', 'ui', 'design', 'legacy', 'review', 'template']);
+  Object.entries(spec).forEach(([key, value]) => {
+    if (skipKeys.has(key) || value == null) return;
+%>
+## <%= key %>
+
+<% if (typeof value === 'string') { %>
+<%= value %>
+<% } else { %>
+```yaml
+<%= context.stringify(value).trim() %>
+```
+<% } %>
+
+<% }); %>

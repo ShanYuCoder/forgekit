@@ -1,0 +1,11 @@
+# Generated from common-navigation.bundle.yaml — pnpm spec:split
+id: common-navigation
+legacyRef:
+  module: common/common
+  function: common-navigation
+  slice: slices.common-navigation
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

@@ -1,0 +1,37 @@
+# Admin CRUD archetype (normalized)
+
+schema: portal-crud-pattern/v1
+id: admin-crud
+knowledge:
+  level: normalized
+
+appliesWhen:
+  - admin
+  - entity-metadata
+  - crud
+
+commonSpecs:
+  - yaml/common/list-page/common-list-page
+  - yaml/common/delete-flow/common-delete-flow
+  - yaml/common/search-filter/common-search-filter
+  - yaml/common/table-action-column/common-table-action-column
+  - yaml/common/pagination/common-pagination
+  - yaml/common/breadcrumb-flow/common-breadcrumb-flow
+
+defaultTags:
+  - "#pattern: CRUD"
+  - "#shell: DataListPage"
+  - "#style: shadcn/ui"
+  - "#style: compact"
+  - "#style: flat"
+
+defaultBehavior:
+  create:
+    enabled: true
+    surface: page
+  update:
+    enabled: true
+    surface: page
+  delete:
+    enabled: true
+    mode: confirm_dialog

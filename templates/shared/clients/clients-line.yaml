@@ -1,0 +1,18 @@
+# clients.line — append to ir/spec.yaml when feature has shop-floor UI
+
+clients:
+  line:
+    profile: kiosk   # kiosk | tablet
+    screens:
+      - id: check-in
+        route: workforce/check-in
+        automationIds:
+          page: {module}-page
+          submit-btn: {module}-submit-btn
+    devices:
+      - badgeReader
+    api:
+      endpoints:
+        checkIn:
+          method: POST
+          path: /workforce/check-in

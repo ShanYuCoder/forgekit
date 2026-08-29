@@ -1,0 +1,199 @@
+import { z } from 'zod'
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import {
+  resolveBeAdapter,
+  resolveFeAdapter,
+  resolveProjectRoot,
+} from '../config/project-root.js'
+import { runAdapterEngine, runCommonGen } from '../adapters/run.js'
+import { runBeEngine } from '../adapters/run-be.js'
+import { validateCommonRegistry } from '../registries/common.js'
+
+function text(data: unknown) {
+  return { content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }] }
+}
+
+function commonShape() {
+  return {
+    adapter: z.enum(['nuxt4', 'nextjs', 'dotnet-line']).optional(),
+    projectRoot: z.string().optional(),
+    docsRoot: z.string().optional(),
+    argv: z.array(z.string()).optional(),
+  }
+}
+
+export function registerTools(server: McpServer): void {
+  const register = (
+    name: string,
+    description: string,
+    kind: 'codegen' | 'unitgen',
+    script: 'generate.mjs' | 'validate-registry.mjs',
+    dryRun = false,
+  ) => {
+    server.tool(name, description, commonShape(), async (input) => {
+      try {
+        const result = runAdapterEngine({
+          adapter: resolveFeAdapter(input.adapter),
+          kind,
+          script,
+          projectRoot: resolveProjectRoot(input.projectRoot),
+          docsRoot: input.docsRoot,
+          argv: input.argv,
+          dryRun,
+        })
+        return text({
+          ok: result.status === 0,
+          status: result.status,
+          stdout: result.stdout,
+          stderr: result.stderr,
+        })
+      } catch (error) {
+        return text({ ok: false, error: error instanceof Error ? error.message : String(error) })
+      }
+    })
+  }
+
+  register('codegen_gen', 'Run FE portal codegen for the selected adapter.', 'codegen', 'generate.mjs')
+  register(
+    'codegen_gen_dry',
+    'Dry-run FE portal codegen for the selected adapter.',
+    'codegen',
+    'generate.mjs',
+    true,
+  )
+  register('unit_gen', 'Run FE unit codegen for the selected adapter.', 'unitgen', 'generate.mjs')
+  register(
+    'unit_gen_dry',
+    'Dry-run FE unit codegen for the selected adapter.',
+    'unitgen',
+    'generate.mjs',
+    true,
+  )
+  register(
+    'codegen_registry_validate',
+    'Validate FE design/codegen registries.',
+    'codegen',
+    'validate-registry.mjs',
+  )
+  register(
+    'unit_registry_validate',
+    'Validate FE unit registries.',
+    'unitgen',
+    'validate-registry.mjs',
+  )
+
+  const commonGenShape = {
+    adapter: z.enum(['nuxt4', 'nextjs']).optional(),
+    projectRoot: z.string().optional(),
+    docsRoot: z.string().optional(),
+    argv: z.array(z.string()).optional(),
+  }
+
+  server.tool('common_gen',
+    'Inventory and stub shared UI from product/surfaces/<surface>/common or CMP-*/common.',
+    commonGenShape,
+    async (input) => {
+      try {
+        const result = runCommonGen({
+          adapter: resolveFeAdapter(input.adapter),
+          projectRoot: resolveProjectRoot(input.projectRoot),
+          docsRoot: input.docsRoot,
+          argv: input.argv,
+        })
+        return text({
+          ok: result.status === 0,
+          status: result.status,
+          stdout: result.stdout,
+          stderr: result.stderr,
+        })
+      } catch (error) {
+        return text({ ok: false, error: error instanceof Error ? error.message : String(error) })
+      }
+    },
+  )
+  server.tool('common_gen_dry',
+    'Dry-run shared UI inventory for surface or module common (no stub writes).',
+    commonGenShape,
+    async (input) => {
+      try {
+        const result = runCommonGen({
+          adapter: resolveFeAdapter(input.adapter),
+          projectRoot: resolveProjectRoot(input.projectRoot),
+          docsRoot: input.docsRoot,
+          argv: input.argv,
+          dryRun: true,
+        })
+        return text({
+          ok: result.status === 0,
+          status: result.status,
+          stdout: result.stdout,
+          stderr: result.stderr,
+        })
+      } catch (error) {
+        return text({ ok: false, error: error instanceof Error ? error.message : String(error) })
+      }
+    },
+  )
+
+  const registerBe = (
+    name: string,
+    description: string,
+    kind: 'codegen' | 'unitgen' | 'registry' | 'unit-registry',
+    dryRun = false,
+  ) => {
+    server.tool(
+      name,
+      description,
+      {
+        adapter: z.enum(['fastapi', 'laravel', 'dotnet-integration']).optional(),
+        projectRoot: z.string().optional(),
+        argv: z.array(z.string()).optional(),
+      },
+      async (input) => {
+        try {
+          const result = runBeEngine({
+            adapter: resolveBeAdapter(input.adapter),
+            projectRoot: resolveProjectRoot(input.projectRoot),
+            kind,
+            argv: input.argv,
+            dryRun,
+          })
+          return text({ ok: result.status === 0, ...result })
+        } catch (error) {
+          return text({ ok: false, error: error instanceof Error ? error.message : String(error) })
+        }
+      },
+    )
+  }
+
+  registerBe('api_gen', 'Run backend API generation.', 'codegen')
+  registerBe('api_gen_dry', 'Dry-run backend API generation.', 'codegen', true)
+  registerBe('api_unit_gen', 'Run backend API unit generation.', 'unitgen')
+  registerBe('api_unit_gen_dry', 'Dry-run backend API unit generation.', 'unitgen', true)
+  registerBe('api_registry_validate', 'Validate backend API codegen registry.', 'registry')
+  registerBe('api_unit_registry_validate', 'Validate backend API unit registry.', 'unit-registry')
+
+  server.tool('common_registry_validate',
+    'Validate the target common registry and alias references.',
+    {
+      projectRoot: z.string().optional(),
+      registry: z.string().optional(),
+    },
+    async (input) => {
+      try {
+        return text({
+          ok: true,
+          ...validateCommonRegistry(
+            resolveProjectRoot(input.projectRoot),
+            input.registry,
+          ),
+        })
+      } catch (error) {
+        return text({
+          ok: false,
+          error: error instanceof Error ? error.message : String(error),
+        })
+      }
+    },
+  )
+}

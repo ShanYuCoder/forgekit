@@ -1,0 +1,77 @@
+schema: portal-feature-bundle/v1
+id: common-flat-design
+title: Common flat design foundation
+status: draft
+owner: portal-team
+summary: "Nền tảng visual chung: phẳng, rõ phân cấp, tránh hiệu ứng 3D và giữ cảm giác shadcn/admin hiện đại."
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  principles:
+    - Ưu tiên border, background nhạt, spacing và typography để tạo hierarchy.
+    - Không dùng gradient cho button/card/alert trong admin portal.
+    - Không dùng shadow nặng; shadow nhẹ chỉ dùng cho overlay nổi như dropdown/dialog nếu cần.
+    - Không lạm dụng modal/alert; dùng inline state gần ngữ cảnh.
+    - Không thiết kế modal chồng modal; flow phức tạp phải chuyển thành page/step/inline section hoặc đóng modal hiện tại trước.
+    - Màu semantic phải có ý nghĩa: success, danger, warning, info, muted.
+  surfaces:
+    pageBackground: neutral/muted nhẹ
+    card:
+      style: border + bg-card/bg-white
+      shadow: none hoặc very subtle
+      radius: md
+    table:
+      style: border hoặc background separation nhẹ
+    dialog:
+      style: phẳng, border, overlay tối nhẹ
+  buttons:
+    complete:
+      background: "#48b0f7"
+      text: "#ffffff"
+    outlinePrimary:
+      border: "#4EAAFF"
+      text: "#4EAAFF"
+      background: "#FFFFFF"
+    outlineSecondary:
+      border: "#C2C2C2"
+      text: "#C2C2C2"
+      background: "#FFFFFF"
+    destructive:
+      purpose: chỉ dùng cho delete/error/destructive
+  acceptance:
+    - Component mới không thêm gradient hoặc shadow nặng.
+    - Visual state dựa vào token/variant chung, không hardcode tùy hứng nếu đã có common variant.
+    - Page legacy tùy hứng về visual phải được normalize về flat design trừ khi có lý do nghiệp vụ.
+    - Spec/prototype không tạo nested modal.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-flat-design
+    slice: slices.common-flat-design
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: "Nền tảng visual chung: phẳng, rõ phân cấp, tránh hiệu ứng 3D và giữ cảm giác shadcn/admin hiện đại."
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

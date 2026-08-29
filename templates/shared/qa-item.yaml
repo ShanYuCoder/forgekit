@@ -1,0 +1,15 @@
+# Copy to qa/open/QA-<bundle.id>-NNNN.yaml — do not leave this file in qa/open/.
+id: QA-cmp-adm-002-02-01-02-0001
+kind: customer # customer | choice | tech-debt
+skill: spec # spec | grill-bqa | grill-dev | grill-docs | api-spec | api-update | api-integration
+target:
+  path: product/surfaces/<surface>/CMP-*/<NN…>/<slug>.bundle.yaml
+  at: design.zones.main.items.title.purpose
+question: |
+  What is still unknown?
+options: []
+# - id: a
+#   text: Option A
+#   recommended: true
+# - id: other
+#   text: Member supplies copy

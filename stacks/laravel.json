@@ -1,0 +1,92 @@
+{
+  "stack": "laravel",
+  "mode": "brownfield",
+  "commands": {
+    "genDry": [
+      "codegenkit",
+      "api-gen:dry",
+      "--adapter=laravel",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "gen": [
+      "codegenkit",
+      "api-gen",
+      "--adapter=laravel",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "unitGenDry": [
+      "codegenkit",
+      "api-unit-gen:dry",
+      "--adapter=laravel",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "unitGen": [
+      "codegenkit",
+      "api-unit-gen",
+      "--adapter=laravel",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "registryValidate": [
+      "codegenkit",
+      "api-registry",
+      "--adapter=laravel"
+    ]
+  },
+  "registries": [
+    "registries/codegen.registry.json",
+    "registries/unit-test.registry.json"
+  ],
+  "gapSources": [
+    "**/generated/HANDOFF.md",
+    "**/generated/UNIT-HANDOFF.md",
+    "**/generated/codegen.manifest.json"
+  ],
+  "specRoots": [],
+  "templates": {
+    "root": "adapters/laravel",
+    "engine": "mixed",
+    "note": "api-gen Node-in-kit; unitgen PHP synced to src/.codegenkit/"
+  },
+  "dsl": {
+    "ssot": "product-repo",
+    "lanes": {
+      "be": {
+        "registries": [
+          "registries/codegen.registry.json"
+        ],
+        "genKeys": [
+          "genDry",
+          "gen"
+        ],
+        "needsTags": [
+          "#needs-endpoint",
+          "#needs-dto"
+        ],
+        "note": "Registries at product root; engines in Codegenkit"
+      },
+      "unit": {
+        "registries": [
+          "registries/unit-test.registry.json"
+        ],
+        "genKeys": [
+          "unitGenDry",
+          "unitGen"
+        ],
+        "needsTags": [
+          "#needs-unit-test"
+        ]
+      }
+    }
+  },
+  "vocabularies": {
+    "registryTags": "artifactgraph/lexicon/registry-tags.en.txt"
+  }
+}

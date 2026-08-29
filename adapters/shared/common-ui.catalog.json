@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "description": "Surface common UI specs under product/surfaces/<surface>/common/yaml/<slug>/ir.",
+  "skipSlugs": [
+    "common-api",
+    "backend-core-services"
+  ],
+  "kindOrder": [
+    "tokens",
+    "policy",
+    "molecule",
+    "shell",
+    "flow"
+  ],
+  "entries": {
+    "common-flat-design": {
+      "kind": "tokens",
+      "emit": false,
+      "summary": "Visual tokens (flat, no heavy shadow/gradient). Apply while implementing other commons."
+    },
+    "common-buttons": {
+      "kind": "tokens",
+      "emit": false,
+      "summary": "Button content/variant policy. Apply to toolbar, search, pagination, dialogs."
+    },
+    "common-form-validation": {
+      "kind": "policy",
+      "emit": false,
+      "summary": "Field/global validation placement and testIds. Apply in /model and form pages."
+    },
+    "common-delete-flow": {
+      "kind": "flow",
+      "emit": false,
+      "dependsOn": ["common-confirm-dialog"],
+      "summary": "Delete/bulk-delete confirm + result dialog. No dedicated component; wire ConfirmDialog."
+    },
+    "common-status-chip": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoStatusChip",
+      "tag": "#common:status-chip",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-status-chip.tsx",
+          "also": ["src/components/common/StatusChip.tsx"]
+        },
+        "nuxt4": {
+          "path": "components/molecules/StatusChip.vue"
+        }
+      }
+    },
+    "common-data-table": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoDataTable",
+      "tag": "#common:data-table",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-data-table.tsx",
+          "also": ["src/components/common/DataTable.tsx"]
+        },
+        "nuxt4": {
+          "path": "components/molecules/DataTable.vue"
+        }
+      }
+    },
+    "common-search-filter": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoSearchForm",
+      "tag": "#common:search-filter",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-search-form.tsx",
+          "also": ["src/components/common/SearchFilterBar.tsx"]
+        },
+        "nuxt4": {
+          "path": "components/molecules/SearchForm.vue"
+        }
+      }
+    },
+    "common-pagination": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoPaginationBar",
+      "tag": "#common:pagination",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-pagination-bar.tsx",
+          "also": ["src/components/common/PaginationBar.tsx"]
+        },
+        "nuxt4": {
+          "path": "components/molecules/PaginationBar.vue"
+        }
+      }
+    },
+    "common-list-toolbar": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoListToolbar",
+      "tag": "#common:list-toolbar",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-list-toolbar.tsx"
+        },
+        "nuxt4": {
+          "path": "components/molecules/ListToolbar.vue"
+        }
+      }
+    },
+    "common-table-action-column": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoTableActionColumn",
+      "tag": "#common:table-action-column",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-table-action-column.tsx"
+        },
+        "nuxt4": {
+          "path": "components/molecules/TableActionColumn.vue"
+        }
+      }
+    },
+    "common-confirm-dialog": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "ConfirmDialog",
+      "tag": "#common:confirm-dialog",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/common/confirm-dialog.tsx",
+          "also": ["src/components/common/ConfirmDialog.tsx"]
+        },
+        "nuxt4": {
+          "path": "components/molecules/ConfirmDialog.vue"
+        }
+      }
+    },
+    "common-breadcrumb-flow": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoBreadcrumbNav",
+      "tag": "#common:breadcrumb",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-breadcrumb-nav.tsx"
+        },
+        "nuxt4": {
+          "path": "components/molecules/BreadcrumbNav.vue"
+        }
+      }
+    },
+    "common-feedback": {
+      "kind": "molecule",
+      "emit": true,
+      "symbol": "MoEmptyState",
+      "tag": "#common:feedback",
+      "extra": [
+        {
+          "symbol": "ToastHost",
+          "nextjs": "src/components/common/toast-host.tsx",
+          "nuxt4": "components/molecules/ToastHost.vue"
+        }
+      ],
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-empty-state.tsx"
+        },
+        "nuxt4": {
+          "path": "components/molecules/EmptyState.vue"
+        }
+      }
+    },
+    "common-import-csv": {
+      "kind": "flow",
+      "emit": true,
+      "symbol": "MoImportCsv",
+      "tag": "#common:import-csv",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/molecules/mo-import-csv.tsx"
+        },
+        "nuxt4": {
+          "path": "components/molecules/ImportCsv.vue"
+        }
+      }
+    },
+    "common-navigation": {
+      "kind": "shell",
+      "emit": true,
+      "symbol": "AdminLayout",
+      "tag": "#shell: WebPortal",
+      "targets": {
+        "nextjs": {
+          "path": "src/components/layout/shell/admin-layout.tsx"
+        },
+        "nuxt4": {
+          "path": "components/layout/AdminLayout.vue"
+        }
+      }
+    },
+    "common-list-page": {
+      "kind": "shell",
+      "emit": true,
+      "symbol": "DataListPage",
+      "tag": "#shell: DataListPage",
+      "dependsOn": [
+        "common-search-filter",
+        "common-list-toolbar",
+        "common-data-table",
+        "common-pagination"
+      ],
+      "targets": {
+        "nextjs": {
+          "path": "src/components/organisms/data-list-page.tsx"
+        },
+        "nuxt4": {
+          "path": "components/organisms/DataListPage.vue"
+        }
+      }
+    }
+  }
+}

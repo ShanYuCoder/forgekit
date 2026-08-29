@@ -1,0 +1,31 @@
+---
+description: Docskit grill metadata — list/form/detail profiles
+globs: product/surfaces/**
+alwaysApply: false
+---
+
+# Team Flow — Grill
+
+For `/grill-bqa`, `/grill-dev`, `/grill-docs` on docs-hub product bundles.
+
+## Ownership
+
+- `api` = BE contract · `ui.list|form|detail` = FE page · `ui.validationMessages` = shared copy
+- `ui.filters|columns|testIds`, `codegen`, `tags` = dev-grill / portal-gen
+
+## Minimum by profile
+
+**List:** `columns`, `filters`, `rowActions`/`bulkActions` when present — structured keys.
+
+**Form:** field `key`, `label`, `type`, `widget`; `validation` + `messages` or `ui.validationMessages`; `source` on selects.
+
+**Detail:** `header`, `sections`, `actions` — structured, not prose blob.
+
+## Decisions
+
+- Prose → `summary`, `requirements`, `acceptance`
+- Validation copy → `ui.validationMessages` + `form.fields[].messages` — no triple duplicate
+- Delete/breadcrumb flows → read `.cursor/extracts/common-delete-flow.md`, `common-breadcrumb-flow.md` when touched
+- Missing validation messages → block `/prototype`
+
+Skill extract: `bqa-grill` · `dev-grill` · `grill-docs`

@@ -1,0 +1,85 @@
+# Design spec v1 — /spec (round 1)
+# Do NOT add codegen, ui.filters, ui.columns, or portal-gen tags here.
+# After /grill-docs → see docs/templates/spec.yaml (portal-gen-ready).
+
+id: role-page-function
+title: Feature title
+status: draft
+owner: portal-team
+summary: Short business summary for BA, QA, dev, and AI.
+
+actors: []
+# - id: admin
+#   legacyRoleCode: master
+
+entities: []
+# - name: Entity
+#   table: entities
+#   importantFields: [id, name, created_at]
+
+relationships: []
+
+requirements:
+  - id: REQ-FEATURE-001
+    title: Main behavior
+    description: User can complete the main behavior.
+    priority: must
+
+ui:
+  routes:
+    - path: /feature-path
+      legacyPath: /legacy/path
+      pageTestId: feature-page
+  # Page profiles for design v1. Keep prose short; move validation/source/message details to form fields.
+  validationMessages:
+    required: This field is required
+    email: Email format is invalid
+    phone: Phone number format is invalid
+    minLength: Must be at least {n} characters
+    maxLength: Must be at most {n} characters
+    min: Must be at least {n}
+    max: Must be at most {n}
+    pattern: Invalid format
+  list:
+    columns: []
+    filters: []
+    rowActions: []
+    bulkActions: []
+    pagination:
+      defaultPageSize: 20
+      pageSizeOptions: [20, 50, 100]
+  form:
+    layout:
+      mode: single-column # single-column | two-column | custom
+    sections: []
+    fields:
+      # - key: name
+      #   label: Name
+      #   type: string
+      #   widget: text
+      #   purpose: "Tên hiển thị trên hồ sơ"
+      #   required: true
+      #   validation:
+      #     maxLength: 255
+      #   messages:
+      #     required: Name is required.
+  detail:
+    header:
+      titleField: name
+      subtitleField: code
+    sections: []
+    actions:
+      - id: edit
+        text: Edit
+      - id: delete
+        text: Delete
+
+# api.endpoints — not authored here. spec:split copies from …/api/<seq>/01-backend-spec.yaml
+
+acceptance:
+  - Main behavior is testable end to end.
+
+
+notes:
+  - YAML is source of truth. Render with pnpm docs:render.
+  - Portal-gen blocks added in /grill-docs — see .cursor/extracts/codegen/readiness.md

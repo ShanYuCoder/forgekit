@@ -1,0 +1,13 @@
+# Generated from common-flat-design.bundle.yaml — pnpm spec:split
+id: common-flat-design
+inherits: admin-crud
+shell:
+  tag: "#shell: DataPage"
+  overrideCommonPattern: false
+patterns:
+  - "#pattern: CRUD"
+zones:
+  - id: main
+    label: Nội dung chính
+behavior: {}
+actions: []

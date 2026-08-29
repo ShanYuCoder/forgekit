@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Portal E2E Testcase",
+  "type": "object",
+  "required": ["id", "feature", "title", "route", "steps", "assertions"],
+  "properties": {
+    "id": { "type": "string" },
+    "feature": { "type": "string" },
+    "title": { "type": "string" },
+    "type": { "type": "string" },
+    "priority": { "type": "string" },
+    "requirementIds": { "type": "array", "items": { "type": "string" } },
+    "route": {
+      "type": "object",
+      "required": ["path"],
+      "properties": {
+        "path": { "type": "string" },
+        "auth": { "type": "string" }
+      }
+    },
+    "testIds": { "type": "object" },
+    "setup": { "type": "object" },
+    "data": { "type": "object" },
+    "steps": { "type": "array", "items": { "type": "object" } },
+    "assertions": { "type": "object" },
+    "expected": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -1,0 +1,10 @@
+from app.modules.{{ module_package }}.{{ entity_snake }}.schemas.request import {{ entity_pascal }}CreateRequest
+from app.modules.{{ module_package }}.{{ entity_snake }}.services.store import _STORE
+
+
+class {{ entity_pascal }}CreateService:
+  async def create(self, body: {{ entity_pascal }}CreateRequest) -> dict:
+    new_id = max((row.get("id", 0) for row in _STORE), default=0) + 1
+    item = {"id": new_id, **body.model_dump(exclude_none=True)}
+    _STORE.append(item)
+    return item

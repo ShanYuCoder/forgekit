@@ -1,0 +1,14 @@
+id: UI-CMN-EMPTY-001
+title: Empty state pattern
+kind: ui-only
+summary: Shared empty-state copy + illustration slot for list shells.
+
+ui:
+  composition: EmptyState
+  props:
+    title: string
+    description: string
+    actionLabel: string | null
+
+api:
+  endpoints: []

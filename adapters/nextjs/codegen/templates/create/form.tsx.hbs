@@ -1,0 +1,45 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { Button, Input, Label } from '@/components/ui';
+import { use{{entityPascal}}Form } from '@/hooks/{{entity}}/use{{entityPascal}}Form';
+
+export function {{entityPascal}}Form() {
+  const router = useRouter();
+  const { values, setField, pending, errorMsg, submit } = use{{entityPascal}}Form();
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const ok = await submit();
+    if (ok) router.push('{{listRoutePath}}');
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="max-w-lg space-y-4"
+      data-testid="{{testIdModule}}-form"
+    >
+{{#each formFields}}
+{{#if hidden}}
+      <input type="hidden" name="{{key}}" value={String(values.{{key}} ?? '')} data-testid="{{../testIdModule}}-{{key}}-hidden" />
+{{else}}
+      <div>
+        <Label htmlFor="{{key}}">{t('{{label}}')}</Label>
+        <Input
+          id="{{key}}"
+          data-testid="{{../testIdModule}}-{{key}}-input"
+          value={String(values.{{key}} ?? '')}
+          onChange={(event) => setField('{{key}}', event.target.value)}
+          {{#if visual.maxWidth}}data-max-width="{{visual.maxWidth}}"{{/if}}
+        />
+      </div>
+{{/if}}
+{{/each}}
+      {errorMsg ? <p className="text-sm text-destructive">{errorMsg}</p> : null}
+      <Button type="submit" disabled={pending} data-testid="{{testIdModule}}-submit-btn">
+        {pending ? 'Saving…' : 'Save'}
+      </Button>
+    </form>
+  );
+}

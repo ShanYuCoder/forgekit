@@ -1,0 +1,82 @@
+import { create{{entityPascal}}Service } from '~/services/{{entity}}.service'
+import { {{entityCamel}}MockSearch } from '~/mocks/{{entity}}.mock'
+
+/**
+ * {{title}} — list composable (portal-gen).
+ * Mock boundary: replace {{entityCamel}}MockSearch with service.search on /wire.
+ */
+export function use{{entityPascal}}List() {
+  const { $apiFetch } = useNuxtApp()
+  const service = create{{entityPascal}}Service($apiFetch)
+
+  const { columns, searchKeys } = use{{entityPascal}}Columns()
+  const { query, filters, resetQuery{{#if hasPerPageToolbar}}, perPage, onPerPageChange: baseOnPerPageChange{{/if}} } = use{{entityPascal}}Filters()
+{{#if hasExportBlock}}
+  const { exportMonth, exportPending, exportOpenRateReport } = use{{entityPascal}}Export(service)
+{{/if}}
+
+  const pending = ref(false)
+  const errorMsg = ref<string | null>(null)
+  const items = ref<Record<string, unknown>[]>([])
+  const total = ref<number | null>(null)
+
+{{#if hasPerPageToolbar}}
+  function onPerPageChange() {
+    baseOnPerPageChange?.()
+    return load()
+  }
+{{/if}}
+
+  async function load() {
+    pending.value = true
+    errorMsg.value = null
+    try {
+      const result = await {{entityCamel}}MockSearch(query.value)
+      items.value = result.items
+      total.value = result.total ?? result.items.length
+    } catch (error: unknown) {
+      errorMsg.value = (error as Error)?.message ?? 'Cannot load {{title}}'
+      items.value = []
+      total.value = null
+    } finally {
+      pending.value = false
+    }
+  }
+
+  function onSearch() {
+    return load()
+  }
+
+  function onReset() {
+    resetQuery()
+    return load()
+  }
+
+{{#if hasLoginAs}}
+  async function loginAsStoreManager(manager: { id: number }) {
+    // Prototype: wire POST /auth/store/login-from-admin on /wire
+    console.info('loginAsStoreManager', manager.id)
+  }
+{{/if}}
+
+  return {
+    pending,
+    errorMsg,
+    items,
+    total,
+    query,
+    filters,
+    columns,
+    searchKeys,
+    load,
+    onSearch,
+    onReset,
+    service{{#if hasPerPageToolbar}},
+    perPage,
+    onPerPageChange{{/if}}{{#if hasExportBlock}},
+    exportMonth,
+    exportPending,
+    exportOpenRateReport{{/if}}{{#if hasLoginAs}},
+    loginAsStoreManager{{/if}}
+  }
+}

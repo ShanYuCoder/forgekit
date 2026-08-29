@@ -1,0 +1,24 @@
+---
+description: Enforce physical interlocks for all Docskit skills
+alwaysApply: true
+---
+
+# Agent Deep Compliance — Physical Interlocks
+
+> [!CRITICAL]
+> Đây là **KHÓA VẬT LÝ**, không phải checklist nhắc nhở.
+> Đồng bộ với `AGENTS.md` + `SSOT_AGENT_PROTOCOL.md`.
+> **CẤM** dùng danh sách dưới đây như Verification Checklist cố định thay cho TODO bóc từ `SKILL.md` Workflow + Accelerators.
+
+Khi chạy bất kỳ skill (`/spec`, `/grill`, `/grill-bqa`, …):
+
+1. **PRE-FLIGHT:** Hành động ĐẦU TIÊN **BẮT BUỘC** tool `{{DOC_SKIT_READ_TOOL}}` lên `SKILL.md` dưới `{{DOC_SKIT_AGENT_DIR}}/skills/`. **TUYỆT ĐỐI KHÔNG** dựa trí nhớ.
+2. **TODO VẬT LÝ:** **BẮT BUỘC** tạo/cập nhật `TODO.md` ở thư mục root bằng cách bóc **toàn bộ Workflow + Accelerators** thành `- [ ]`. (Ghi đè hoàn toàn nếu chuyển sang skill mới, cập nhật tiếp status nếu đang chat dở skill cũ). **TUYỆT ĐỐI KHÔNG** tạo trong `.harness/tasks/`. **TUYỆT ĐỐI KHÔNG** chỉ copy Verification Checklist. **TUYỆT ĐỐI KHÔNG** gộp bước / tick hàng loạt. Ghi đè `[x]` bằng `{{DOC_SKIT_WRITE_TOOL}}` chỉ khi có evidence.
+3. **PLAN VẬT LÝ:** Trước khi ghi product YAML/MD, **BẮT BUỘC** gộp plan vào `TODO.md` (ở thư mục root). Trích dẫn nguyên văn từng dòng Verification Checklist + kế hoạch từng dòng ngay trong `TODO.md`. **TUYỆT ĐỐI KHÔNG** tạo thêm file plan rời (`*-plan.md`).
+4. **NO RAM CACHING:** Mọi kết quả bền **BẮT BUỘC** `{{DOC_SKIT_WRITE_TOOL}}` ngay. **KHÔNG ĐƯỢC PHÉP** giữ trên chat/RAM. Grill proposal chưa Confirm → thảo luận trực tiếp trên chat, **TUYỆT ĐỐI KHÔNG** tạo file `*-proposal.md`, **TUYỆT ĐỐI KHÔNG** ghi đè product SSOT trước khi chốt.
+5. **ZERO BUSINESS HALLUCINATION:** Data chỉ từ (1) User prompt (2) ArtifactGraph registry. **TUYỆT ĐỐI KHÔNG** bịa field/validation/DB/flow. Thiếu → trống hoặc `#missing_info`. **CẤM** thông minh đột xuất.
+6. **GRILL HARD GATE:** ArtifactGraph re-check → micro-scope → đề xuất (Recommended) → **STOP hỏi Member**. **TUYỆT ĐỐI KHÔNG** tự ghi SSOT trước Confirm.
+7. **DSL / COMMON:** Người quyết định. Agent chỉ `/common`, `/common-spec`, `/docs-mark`, hoặc Confirm sau grill. `/spec` chỉ consume. **TUYỆT ĐỐI KHÔNG** sáng tác/ghi đè common.
+8. **ISOLATION:** Chỉ skill được gọi. **TUYỆT ĐỐI KHÔNG** merge sibling. **TUYỆT ĐỐI KHÔNG** fake Markdown reports khi skill yêu cầu YAML.
+
+**Path:** `product/surfaces/<surface>/CMP-*/<slug>/` (không `modules/`).

@@ -1,0 +1,27 @@
+'use client';
+
+import { useMemo } from 'react';
+import type { DataTableColumn } from '@/components/molecules/data-table-types';
+
+/**
+ * {{title}} — column definitions (portal-gen).
+ */
+export function use{{entityPascal}}Columns() {
+  const columns = useMemo<DataTableColumn[]>(
+    () => [
+{{#each columns}}
+      {
+        key: '{{key}}',
+        title: t('{{title}}'){{#if sortable}},
+        sortable: true{{/if}}{{#if align}},
+        align: '{{align}}'{{/if}}
+      }{{#unless @last}},{{/unless}}
+{{/each}}
+    ],
+    [],
+  );
+
+  const searchKeys = useMemo(() => columns.map((column) => column.key), [columns]);
+
+  return { columns, searchKeys };
+}

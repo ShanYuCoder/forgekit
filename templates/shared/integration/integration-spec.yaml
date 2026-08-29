@@ -1,0 +1,37 @@
+feature:
+  id: example-integration-adapter
+  title: OT adapter name
+  status: draft
+  version: 0.1.0
+
+approval:
+  status: draft
+
+codegen:
+  module: mes
+  entity: PlantDowntime
+  profile: mes-downtime
+
+api:
+  endpoints:
+    - id: mes.downtime
+      module: mes
+      action: getDowntime
+      method: GET
+      path: /plants/{plant_id}/downtime
+      response: PlantDowntimeResponse
+
+responses:
+  PlantDowntimeResponse:
+    fields:
+      - name: plant_id
+        type: integer
+      - name: items
+        type: array
+        items:
+          - name: machine_id
+            type: string
+          - name: minutes
+            type: integer
+          - name: reason
+            type: string

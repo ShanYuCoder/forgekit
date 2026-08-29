@@ -1,0 +1,11 @@
+# Generated from common-data-table.bundle.yaml — pnpm spec:split
+id: common-data-table
+legacyRef:
+  module: common/common
+  function: common-data-table
+  slice: slices.common-data-table
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

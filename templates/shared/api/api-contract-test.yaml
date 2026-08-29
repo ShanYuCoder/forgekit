@@ -1,0 +1,33 @@
+# API contract test template (fast-api-base)
+
+# Round 1 — spec phase: đặt cạnh bundle `{id}.api-test.yaml`
+# Test phase: `testcases/{id}.api-test.yaml` (source of truth cho pytest)
+
+id: role-domain-function-contract
+title: Feature API contract
+type: api-contract
+feature: function-name
+
+contractRef:
+  portalIrSpec: product/surfaces/.../CMP-*/<slug>/code/W-*/ir/spec.yaml (or --id)
+
+backendSpec: backend/01-backend-spec.yaml
+
+assertions:
+  requestModel: FeatureRequest
+  responseModel: FeatureResponse
+
+expected:
+  - request/response field keys ⊆ portal entities
+
+# Optional HTTP smoke (pytest TestClient — sau /fast-code)
+# endpoint:
+#   method: POST
+#   path: /api/feature/action
+# setup:
+#   json:
+#     field: value
+# assertions:
+#   status: 200
+#   body:
+#     success: true

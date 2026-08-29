@@ -1,0 +1,128 @@
+schema: portal-feature-bundle/v1
+id: role-domain-function
+title: Feature API
+status: draft
+owner: fast-team
+summary: Backend API bundle — mirror portal contract keys
+specOrigin: requirement
+
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+
+contractRef:
+  portalIrSpec: product/surfaces/.../CMP-*/<slug>/code/W-*/ir/spec.yaml (or --id)
+
+spec:
+  feature:
+    id: role-domain-function
+    title: Feature API
+    status: draft
+    version: 0.1.0
+  approval:
+    status: draft
+  api:
+    endpoints:
+      - id: feature.action
+        module: feature
+        action: action
+        method: POST
+        path: /feature/action
+        request: FeatureRequest
+        response: FeatureResponse
+        errorStorming:
+          - code: 401
+            tag: "#err:unauthorized"
+            reason: "User not authenticated"
+          - code: 422
+            tag: "#err:validation"
+            reason: "Invalid payload"
+            fields: ["example_field"]
+  requests:
+    FeatureRequest:
+      fields:
+        - name: example_field
+          type: string
+  responses:
+    FeatureResponse:
+      fields:
+        - name: result
+          type: string
+
+gen:
+  codegen:
+    module: feature
+    entity: FeatureAction
+    profile: command-stub # REQUIRED: auth | select-item | free | setting | export | import | dashboard-stats | list | create | edit | detail | admin-crud | command-stub
+    skip: []
+
+legacy:
+  legacyRef: null
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+
+design:
+  inherits: null
+  shell:
+    tag: "#shell: ApiModule"
+  patterns: []
+  zones: []
+  behavior: {}
+  actions:
+    - id: feature.action
+      label: Execute Feature Action
+      trigger: button_click
+      apiRefs: [ feature.action ]
+      onSuccess:
+        - Show success toast
+      onCommonError:
+        override: false
+      onSpecificError:
+        - condition: "422 Validation"
+          notes: "Show inline validation errors"
+
+  # Đa ngôn ngữ (i18n): Danh sách các bản dịch của error/validation messages trả về từ Backend (nếu có).
+  # LƯU Ý: Email/SMS content lưu trong DB. Enum trả về số (1, 2) để FE tự dịch.
+  i18n: {}
+  #  "error_invalid_email":
+  #    vi: "Email không hợp lệ"
+  #    en: "Invalid email"
+
+review:
+  summary: Backend stub for portal wire
+  layoutNotes: []
+
+
+# --- platform-mark (member / grill — not /fast-spec) ---
+marks: []
+# - id: MK-AUTH-ROLES-001
+#   kind: common
+#   tag: "#common:auth-current-roles"
+#   registryId: auth.current-roles
+#   reason: "Promote role lookup"
+#   source: platform-mark
+
+technicalMarks: []
+# - kind: derived-data
+#   tag: "#derived-data"
+#   derivedData:
+#     backendOnly: true
+#     field: search_text
+#     sourceOfTruth: content
+#     refresh: on_write
+
+externalCalls: []
+# - id: mes.fetchDowntime
+#   provider: integration-base
+#   direction: outbound
+#   trigger: GET /maintenance/downtime
+
+services: []
+# - id: order.fulfillBoth
+#   reason: Two independent aggregates
+#   alternativesConsidered: []

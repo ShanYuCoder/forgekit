@@ -1,0 +1,54 @@
+---
+description: Docskit MCP — arc42/C4 docs index; opt-in skill use
+alwaysApply: false
+---
+# docskit
+
+Use `/docskit` for targeted ID, dependency, link, journey, and chapter queries.
+
+The docs repo owns architecture/product Markdown. Docskit indexes and validates
+only.
+
+- In docs: `DOCSKIT_ROOT` points to the current docs repo.
+- In FE/BE/tests consumer installs: `DOCSKIT_ROOT` points to an explicit docs
+  checkout selected by the member. Never infer `../base-docs`.
+- Consumer installs sync only `/docskit` + this lightweight rule; architecture
+  authoring skills stay in docs.
+
+1. Use `docskit_layout`, `docskit_route`, or `docskit_list_ids` to narrow scope.
+2. Use `docskit_get_element` for one ID.
+3. Use `docskit_deps_of` and `docskit_dependents_of` for reference impact.
+4. Run `docskit_orphans` and `docskit_validate_links` before claiming completeness.
+5. Use `docskit_business_processes` before reading all journey files.
+
+Do not require Docskit for architecture work: if the MCP is unavailable, inspect
+the repository Markdown directly or explain how to run project-local setup.
+
+## Index routing
+
+Cross-repo index is per-repo, never one giant parent-workspace graph:
+
+- Architecture ID / C4 path → Docskit (`DOCSKIT_ROOT`). Never CodeGraph for
+  architecture Markdown.
+- IR / registry / generation → pointer kits when present
+  (`CODEGENKIT_DOCS_ROOT`, `TESTKIT_DOCS_ROOT`, `TESTKIT_TESTS_ROOT`).
+- Symbol / call-graph for repo `X` → CodeGraph MCP for `X`
+  (`codegraph-<key>`, `--project-root` = checkout of `X`). Platform DNA wires
+  those servers from machine-local maps (`platform-repos.local.json`,
+  `legacy-repos.local.json`); members must not hand-edit `.cursor/mcp.json` for
+  that. Re-run `platform-dna codegraph:wire` to refresh.
+- ArtifactGraph stays local-only; it is never a shared index for other repos.
+
+ArtifactGraph is optional. If `@platform/artifactgraph` is not configured,
+unavailable, or fails, Docskit must continue with targeted local search and
+scoped Markdown reads; the missing optional must never abort the run. Assign one
+stable `runId` per run. Count each successful fallback file read and its exact
+raw byte length. After the fallback completes, emit exactly one
+`docskit.missing-optional` JSON event per `runId` + optional pair conforming to
+`.cursor/schemas/docskit/missing-optional-event.schema.json`; deduplicate
+retries. Report only actual `fileReads` and `contextBytes`, never token estimates.
+
+## Links and Paths Rule
+
+- **Strictly Use Relative Links:** All Markdown files (`*.md`) and rule/guide documents MUST use relative paths for referencing other files (e.g. `[link](product/overview/personas.md)` or `[spec.yaml](../../templates/shared/spec.yaml)`).
+- **Never Use Absolute Paths:** Do not use absolute filesystem paths (such as `/home/...` or `file:///...`) under any circumstances, as they break when team members check out the repo on different machines.

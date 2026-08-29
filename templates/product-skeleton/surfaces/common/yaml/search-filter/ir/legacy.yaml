@@ -1,0 +1,11 @@
+# Generated from common-search-filter.bundle.yaml — pnpm spec:split
+id: common-search-filter
+legacyRef:
+  module: common/common
+  function: common-search-filter
+  slice: slices.common-search-filter
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

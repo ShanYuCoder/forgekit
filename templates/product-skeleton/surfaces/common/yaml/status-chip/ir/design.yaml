@@ -1,0 +1,13 @@
+# Generated from common-status-chip.bundle.yaml — pnpm spec:split
+id: common-status-chip
+inherits: admin-crud
+shell:
+  tag: "#shell: DataPage"
+  overrideCommonPattern: false
+patterns:
+  - "#pattern: CRUD"
+zones:
+  - id: main
+    label: Nội dung chính
+behavior: {}
+actions: []

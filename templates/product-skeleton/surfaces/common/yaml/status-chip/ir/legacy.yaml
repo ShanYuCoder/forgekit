@@ -1,0 +1,11 @@
+# Generated from common-status-chip.bundle.yaml — pnpm spec:split
+id: common-status-chip
+legacyRef:
+  module: common/common
+  function: common-status-chip
+  slice: slices.common-status-chip
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

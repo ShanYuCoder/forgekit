@@ -1,0 +1,68 @@
+schema: portal-feature-bundle/v1
+id: common-navigation
+title: Common navigation and page header
+status: draft
+owner: portal-team
+summary: Chuẩn sidebar, page title, breadcrumb và route trong admin portal prototype.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  sidebar:
+    behavior:
+      - Parent menu click để open/close child.
+      - Active child route mở parent tương ứng.
+      - Prototype chỉ hiển thị feature đã migrate hoặc đang design.
+    routePrefix:
+      legacyAdminPrefix: /admin
+      portalRoute: không dùng `/admin` prefix trong frontend route.
+    testIds:
+      navItem: nav-{id}
+  pageHeader:
+    title:
+      source: route meta hoặc component page header.
+      testId: "{module}-page-title"
+    breadcrumb:
+      default: optional trong prototype; nếu dùng phải có testId theo docs/operational/E2E-TESTIDS.md.
+    actions:
+      - Header actions chỉ dùng cho page-level action thật sự.
+      - Nếu legacy/spec yêu cầu group_action trong card/form thì không đưa action lên page header.
+  dynamicRoutes:
+    detail: pages/{module}/[id]/index.vue
+    edit: pages/{module}/[id]/edit.vue
+    child: pages/{module}/[id]/{child}.vue
+  acceptance:
+    - Sidebar không chứa route chưa làm prototype.
+    - Page title rõ và nhất quán.
+    - Dynamic route không dùng file đóng `{module}/[id].vue`.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-navigation
+    slice: slices.common-navigation
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Chuẩn sidebar, page title, breadcrumb và route trong admin portal prototype.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

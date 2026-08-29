@@ -1,0 +1,58 @@
+# Generated from common-list-page.bundle.yaml — pnpm spec:split
+id: common-list-page
+title: Common list page shell
+status: draft
+owner: portal-team
+summary: Chuẩn layout chung cho các page danh sách trong admin portal, ưu tiên giao diện phẳng shadcn và giữ các phần legacy lặp lại có giá trị sử dụng.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+scope:
+  appliesTo:
+    - admin list page
+    - search/filter table page
+    - import/report list có pagination
+  excludes:
+    - report preview đặc thù
+    - dashboard block
+    - form detail/edit page
+principles:
+  - UI phẳng: dùng border, background nhẹ, spacing rõ; không dùng gradient, shadow nặng, hiệu ứng 3D.
+  - Legacy evidence là input để nhận diện pattern lặp lại; không copy các page legacy làm tùy hứng nếu trái common spec.
+  - Page spec riêng chỉ mô tả phần khác biệt; mọi phần list/search/toolbar/table/pagination mặc định dùng common specs.
+layout:
+  shell:
+    - Dashboard layout hiện tại là outer shell; không dựng lại legacy theme wrapper.
+    - Content list dùng một khối phẳng có border nhẹ và background `bg-card` hoặc `bg-white`.
+    - Search/filter nằm phía trên table.
+    - Toolbar action nằm dưới search/filter và phía trên table.
+    - Table body nằm trong vùng trắng, có horizontal overflow khi nhiều cột.
+    - Pagination nằm dưới table và căn giữa.
+  density:
+    default: compact
+    rowHeight: 40-48px cho table thường
+    cellPadding: px-3 py-2
+    spacing: 4 hoặc 6 theo scale Tailwind, tránh khoảng trắng quá lớn trên list nhiều dữ liệu.
+composition:
+  preferredComponents:
+    - DataListPage
+    - MoSearchForm
+    - MoDataTable
+    - MoPaginationBar
+  overridePolicy:
+    - Chỉ tạo organism riêng khi `DataListPage` không thể giữ đúng layout của spec hoặc page có table/report đặc thù.
+    - Nếu override common pattern, spec page phải ghi `overrideCommonPattern: true` và lý do.
+testIds:
+  required:
+    page: "{module}-page"
+    searchForm: "{module}-search-form"
+    toolbar: "{module}-toolbar"
+    table: "{module}-table"
+    pagination: "{module}-pagination"
+acceptance:
+  - List page không dùng card/shadow lồng nhau gây cảm giác 3D.
+  - Search, toolbar, table, pagination có vị trí nhất quán trên mọi page list.
+  - Page nhiều cột không làm vỡ layout; table scroll ngang và text cell theo common overflow spec.

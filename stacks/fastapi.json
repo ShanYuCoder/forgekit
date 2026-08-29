@@ -1,0 +1,98 @@
+{
+  "stack": "fastapi",
+  "mode": "brownfield",
+  "commands": {
+    "genDry": [
+      "codegenkit",
+      "api-gen:dry",
+      "--adapter=fastapi",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "gen": [
+      "codegenkit",
+      "api-gen",
+      "--adapter=fastapi",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "unitGenDry": [
+      "codegenkit",
+      "api-unit-gen:dry",
+      "--adapter=fastapi",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "unitGen": [
+      "codegenkit",
+      "api-unit-gen",
+      "--adapter=fastapi",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "registryValidate": [
+      "codegenkit",
+      "api-registry",
+      "--adapter=fastapi"
+    ],
+    "commonRegistry": [
+      "codegenkit",
+      "common-registry"
+    ]
+  },
+  "registries": [
+    "registries/codegen.registry.json",
+    "registries/unit-test.registry.json",
+    "registries/common.registry.json"
+  ],
+  "gapSources": [
+    "**/generated/HANDOFF.md",
+    "**/generated/UNIT-HANDOFF.md",
+    "**/generated/codegen.manifest.json"
+  ],
+  "specRoots": [],
+  "templates": {
+    "root": "adapters/fastapi/codegen/templates",
+    "engine": "jinja2",
+    "note": "SSOT in Codegenkit; product has no root codegen/"
+  },
+  "dsl": {
+    "ssot": "product-repo",
+    "lanes": {
+      "be": {
+        "registries": [
+          "registries/codegen.registry.json",
+          "registries/common.registry.json"
+        ],
+        "genKeys": [
+          "genDry",
+          "gen"
+        ],
+        "needsTags": [
+          "#needs-endpoint",
+          "#needs-dto"
+        ],
+        "note": "Registries at product root; engines in Codegenkit"
+      },
+      "unit": {
+        "registries": [
+          "registries/unit-test.registry.json"
+        ],
+        "genKeys": [
+          "unitGenDry",
+          "unitGen"
+        ],
+        "needsTags": [
+          "#needs-unit-test"
+        ]
+      }
+    }
+  },
+  "vocabularies": {
+    "registryTags": "artifactgraph/lexicon/registry-tags.en.txt"
+  }
+}

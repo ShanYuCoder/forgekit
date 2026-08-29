@@ -1,0 +1,12 @@
+id: API-CMN-HEALTH-001
+title: Health check
+kind: api-only
+method: GET
+path: /api/health
+
+response:
+  200:
+    body:
+      status: ok
+
+ui: null

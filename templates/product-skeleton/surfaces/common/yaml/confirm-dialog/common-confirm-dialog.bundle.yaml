@@ -1,0 +1,89 @@
+schema: portal-feature-bundle/v1
+id: common-confirm-dialog
+title: Common confirm dialog
+status: draft
+owner: portal-team
+summary: Chuẩn confirm dialog cho destructive/overwrite action, thay thế `window.confirm` trong prototype lâu dài.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  principles:
+    - Không lạm dụng modal; chỉ dùng khi action destructive, irreversible, overwrite hoặc có side effect lớn.
+    - Dialog phẳng, border rõ, không gradient/shadow nặng.
+    - Non-destructive confirmation nên dùng inline confirmation hoặc disabled state nếu đủ rõ.
+    - Tránh tuyệt đối modal chồng modal; nếu modal đang mở thì action con phải xử lý trong cùng modal hoặc đóng modal hiện tại trước khi mở flow mới.
+  terminology:
+    actionModal:
+      definition: Dialog có button action hoặc close, chặn tương tác background.
+      dismissal: Chỉ đóng khi user bấm confirm, cancel, close, hoặc flow kết thúc theo spec.
+      interaction: User chỉ thao tác được trong modal trong lúc modal mở.
+    alertToast:
+      definition: Thông báo nổi tự mất, không có confirm/cancel action.
+      ownerSpec: common-feedback
+  layout:
+    placement:
+      default: center
+      reason: Dialog có button hành động cần focus và xác nhận rõ, nên hiển thị modal giữa màn hình.
+      topRightNotAllowedFor:
+        - confirm delete
+        - confirm overwrite
+        - cancel/confirm action flow
+      topRightBelongsTo: alert dialog không có action confirm/cancel trong `common-feedback`.
+    content:
+      maxWidth: sm
+      title: ngắn, rõ action
+      description: mô tả object/impact
+    footer:
+      alignment: right
+      order:
+        - cancel secondary/outline gray
+        - confirm primary hoặc destructive
+  copy:
+    deleteSingle: この要素を削除してよろしいですか？
+    deleteMultiple: これらのレコードを削除しますか？
+    overwriteImport: 重複するデータが存在し、それは上書きされます。続行しますか？
+  testIds:
+    dialog: "{module}-{action}-dialog"
+    title: "{module}-{action}-dialog-title"
+    content: "{module}-{action}-dialog-content"
+    confirm: "{module}-{action}-confirm-btn"
+    cancel: "{module}-{action}-cancel-btn"
+  acceptance:
+    - Row delete, bulk delete và import overwrite không dùng `window.confirm` khi đã có common dialog.
+    - Confirm button disabled/loading khi action đang pending.
+    - Cancel đóng dialog và không gọi service.
+    - Confirm dialog có button action mặc định đặt giữa màn hình, không dùng top-right.
+    - Top-right chỉ áp dụng cho alert dialog không có confirm/cancel action.
+    - Không mở modal thứ hai trên modal hiện tại.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-confirm-dialog
+    slice: slices.common-confirm-dialog
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Chuẩn confirm dialog cho destructive/overwrite action, thay thế `window.confirm` trong prototype lâu dài.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

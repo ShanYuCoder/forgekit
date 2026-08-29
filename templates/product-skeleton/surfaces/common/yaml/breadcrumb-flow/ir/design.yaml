@@ -1,0 +1,13 @@
+# Generated from common-breadcrumb-flow.bundle.yaml — pnpm spec:split
+id: common-breadcrumb-flow
+inherits: admin-crud
+shell:
+  tag: "#shell: DataPage"
+  overrideCommonPattern: false
+patterns:
+  - "#pattern: CRUD"
+zones:
+  - id: main
+    label: Nội dung chính
+behavior: {}
+actions: []

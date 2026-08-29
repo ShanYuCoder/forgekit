@@ -1,0 +1,147 @@
+schema: portal-feature-bundle/v1
+id: common-buttons
+title: Common buttons
+status: draft
+owner: portal-team
+summary: Chuẩn button toàn admin portal để tránh chỗ chỉ text, chỗ icon + text không nhất quán.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  principles:
+    - Button nghiệp vụ mặc định dùng icon + text.
+    - Nếu legacy thiếu icon, prototype chọn icon lucide hợp lý theo ý nghĩa action.
+    - Icon không được là placeholder; phải phản ánh action/status.
+    - Thiết kế phẳng: border/background rõ, không gradient, không shadow nặng.
+    - Tránh button chỉ màu mà không có text/icon đủ nghĩa.
+  defaultPattern:
+    businessAction:
+      content: icon + text
+      iconPosition: left
+      gap: 2
+      examples:
+        search:
+          text: 検索
+          icon: Search
+        clear:
+          text: クリア
+          icon: RotateCcw hoặc X
+        create:
+          text: 新規作成
+          icon: Plus
+        save:
+          text: 保存
+          icon: Save
+        update:
+          text: 更新
+          icon: Save
+        edit:
+          text: 編集
+          icon: Edit
+        duplicate:
+          text: 複製
+          icon: Copy
+        import:
+          text: インポート
+          icon: Upload
+        upload:
+          text: アップロード
+          icon: Upload
+        download:
+          text: ダウンロード
+          icon: Download
+        export:
+          text: エクスポート
+          icon: Download
+        backToList:
+          text: 一覧へ
+          icon: List
+        delete:
+          text: 削除
+          icon: Trash2
+          variant: destructive
+  exceptions:
+    tableAction:
+      rule: icon-only
+      reason: Cột action trong table cần compact và đã có aria-label/title theo `common-table-action-column`.
+    paginationPrevNext:
+      rule: icon + text
+      icons:
+        previous: ChevronLeft
+        next: ChevronRight
+      text:
+        previous: 前へ
+        next: 次へ
+      reason: Pagination cần dễ hiểu hơn cho admin user, giữ icon để nhận diện nhanh và text tiếng Nhật để rõ hành động.
+    iconUtility:
+      rule: icon-only
+      appliesTo:
+        - close dialog
+        - collapse sidebar
+        - clear single chip
+      requirement: bắt buộc có aria-label/title.
+    readonlyMetric:
+      rule: text-only allowed
+      examples:
+        - 合計 {count}
+      reason: Đây là indicator dạng button-style nhưng không phải action clickable.
+  variants:
+    complete:
+      useFor: primary/complete action
+      background: "#48b0f7"
+      text: "#ffffff"
+    outlinePrimary:
+      useFor: search/secondary positive action
+      border: "#4EAAFF"
+      text: "#4EAAFF"
+      background: "#FFFFFF"
+    outlineSecondary:
+      useFor: clear/cancel/back neutral action
+      border: "#C2C2C2"
+      text: "#6B7280"
+      background: "#FFFFFF"
+    destructive:
+      useFor: delete/destructive action
+      icon: Trash2
+  accessibility:
+    - Button icon + text không cần aria-label riêng nếu text đủ rõ.
+    - Button icon-only bắt buộc có `aria-label` và `title`.
+    - Loading button giữ icon hoặc spinner bên trái, text vẫn mô tả action.
+  testIds:
+    button: "{module}-{action}-btn"
+  acceptance:
+    - Các button nghiệp vụ ngoài table/pagination không còn text-only.
+    - Nếu page dùng legacy button text-only thì prototype phải bổ sung icon hợp lý.
+    - Pagination previous/next dùng icon + text, page number vẫn là số.
+    - Table action tiếp tục icon-only và không thêm text label.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-buttons
+    slice: slices.common-buttons
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Chuẩn button toàn admin portal để tránh chỗ chỉ text, chỗ icon + text không nhất quán.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

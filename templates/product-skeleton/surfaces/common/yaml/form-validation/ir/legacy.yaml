@@ -1,0 +1,11 @@
+# Generated from common-form-validation.bundle.yaml — pnpm spec:split
+id: common-form-validation
+legacyRef:
+  module: common/common
+  function: common-form-validation
+  slice: slices.common-form-validation
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

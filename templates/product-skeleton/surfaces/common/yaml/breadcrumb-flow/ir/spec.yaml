@@ -1,0 +1,31 @@
+# Generated from common-breadcrumb-flow.bundle.yaml — pnpm spec:split
+id: common-breadcrumb-flow
+title: Common breadcrumb flow
+status: draft
+owner: portal-team
+summary: Mọi dashboard page có breadcrumb khớp menu cha-con và action chain; breadcrumb trên page title.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+principles:
+  - Breadcrumb bắt buộc trên list, detail, edit, create khi có sidebar parent.
+  - Thứ tự header — breadcrumb rồi page title rồi content.
+  - Create không phải menu con — trail đi qua list (toolbar create).
+references:
+  - .cursor/extracts/common-breadcrumb-flow.md
+  - docs/features/common/common-list-page.spec.yaml
+hierarchy:
+  - sidebarParent
+  - sidebarChildOrList
+  - actionPages
+examples:
+  hotelList: ホテル管理 > ホテル一覧
+  hotelDetail: ホテル管理 > ホテル一覧 > {name}
+  hotelEdit: ホテル管理 > ホテル一覧 > {name} > 編集
+  hotelCreate: ホテル管理 > ホテル一覧 > 新規作成
+grill:
+  bqa: labels, entity display field, create label
+  dev: ui.routes chain, route meta, wire-only menu API

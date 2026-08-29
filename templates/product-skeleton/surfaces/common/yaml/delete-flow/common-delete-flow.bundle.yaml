@@ -1,0 +1,59 @@
+schema: portal-feature-bundle/v1
+id: common-delete-flow
+title: Common delete flow
+status: draft
+owner: portal-team
+summary: Delete và bulk delete luôn dùng confirm dialog chặn + result dialog — không toast-only.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  principles:
+    - Confirm trước delete — blocking modal, user phải chọn cancel hoặc confirm.
+    - Sau delete — success hoặc error đều qua result dialog blocking; user acknowledge trước khi tiếp tục.
+    - Không dùng toast/inline alert làm phản hồi duy nhất cho delete.
+  references:
+    - docs/features/common/common-confirm-dialog.spec.yaml
+    - docs/features/common/common-feedback.spec.yaml
+    - .cursor/extracts/common-delete-flow.md
+  flow:
+    - step: confirm
+      ui: AlertDialog blocking
+      copy: theo object (single / bulk)
+    - step: api
+      onSuccess: result dialog success
+      onError: result dialog error
+  grill:
+    bqa: copy confirm, button labels, navigation sau delete
+    dev: endpoint, bulk vs single, wire-only nếu API chưa có
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-delete-flow
+    slice: slices.common-delete-flow
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Delete và bulk delete luôn dùng confirm dialog chặn + result dialog — không toast-only.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

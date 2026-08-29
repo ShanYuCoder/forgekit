@@ -1,0 +1,32 @@
+---
+description: /prototype, /grill-prototype — UI prototype with mock API boundary
+globs: "{pages,components,composables,mocks,src/app,src/components,src/hooks}/**/*.{vue,ts,tsx}"
+alwaysApply: false
+---
+
+# Team Flow — Prototype
+
+Active: `/prototype` · `/grill-prototype` — **một** command / session.
+
+| Command | Skill |
+|---------|-------|
+| `/prototype` | `.cursor/skills/prototype/SKILL.md` |
+| `/grill-prototype` | `.cursor/skills/grill-prototype/SKILL.md` |
+
+Prerequisite: member-configured `CODEGENKIT_DOCS_ROOT` points to the grilled
+docs registry hub → `npm run codegen:dry -- --id …` OK. Never infer a sibling docs
+checkout; local ArtifactGraph is not the docs bridge. Architecture IDs →
+Docskit (`DOCSKIT_ROOT`); never CodeGraph for C4/architecture.
+
+## Thứ tự
+
+0. `/gen-common --surface=…` rồi `/gen-common --module=CMP-…` nếu hub có `common/` — gen molecule/shell dùng chung trước.
+1. Quét `#needs-component` / custom-render tags — chỉ tạo component còn thiếu.
+2. `npm run codegen -- --id W-…` (hoặc MCP `gen`) — đọc `…/code/{W-…}/generated/HANDOFF.md`.
+3. Vá slot · auth bypass · gap; **không** sửa YAML business trên hub khi prototype.
+
+- Source: grill-approved hub `ir/design.yaml`
+- Real UI; mock chỉ API boundary
+- **Không** backend thật — `/wire` thay mock
+- `data-testid` sớm (`E2E-TESTIDS.md` trên hub)
+- **Không** viết lại scaffold đã gen

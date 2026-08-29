@@ -1,0 +1,17 @@
+---
+description: Harness state files — progress, tasks, and session handoff
+globs: .harness/**/*
+alwaysApply: false
+---
+
+# Harness State
+
+SSOT for run tracking lives under `.harness/` (not `.agents/tasks/`).
+
+- `TODO.md` (in workspace root) — live TODO derived from skill Workflow (+ optional Accelerators) AND detailed plan before authoring durable YAML/MD. Mark `[x]` only with evidence. Do not create TODOs in `tasks/`. Do not create separate plan or proposal files.
+- `feature_list.json` — scope; do not mark done without verify.
+- `progress.md` — handoff for the next session.
+- `registries/page-lifecycle.registry.json` + `base-docs/platform/toolchain/PAGE-LIFECYCLE.md` — highest stage per route when present; `portal:gen` / `portal:remove` / `portal:lifecycle sync` update these.
+- When a public command updates phase, record: command, files changed, verify ran or not, remaining blockers.
+
+Host overlays (Antigravity `AGENTS.md`, Cursor always-apply rules) point here; they must not invent a second task tracker.

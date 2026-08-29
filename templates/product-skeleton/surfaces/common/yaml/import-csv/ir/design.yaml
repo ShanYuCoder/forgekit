@@ -1,0 +1,13 @@
+# Generated from common-import-csv.bundle.yaml — pnpm spec:split
+id: common-import-csv
+inherits: admin-crud
+shell:
+  tag: "#shell: DataPage"
+  overrideCommonPattern: false
+patterns:
+  - "#pattern: CRUD"
+zones:
+  - id: main
+    label: Nội dung chính
+behavior: {}
+actions: []

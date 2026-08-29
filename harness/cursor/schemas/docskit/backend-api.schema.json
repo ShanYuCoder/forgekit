@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Backend API Spec",
+  "type": "object",
+  "required": ["feature", "modules", "api"],
+  "properties": {
+    "feature": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "string" },
+        "version": { "type": "string" },
+        "source": { "type": "object" }
+      }
+    },
+    "changeLog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "source": { "type": "string" },
+          "summary": { "type": "string" },
+          "impact": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "breaking": { "type": "boolean" }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "summary": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "contexts": {
+      "type": "object",
+      "properties": {
+        "portalLayout": { "type": "string" },
+        "routePrefixes": { "type": "object" },
+        "actors": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "purpose": { "type": "string" },
+          "entities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "mode"],
+              "properties": {
+                "name": { "type": "string" },
+                "table": { "type": "string" },
+                "mode": { "enum": ["Platform", "Tenant", "Pivot"] },
+                "aggregateRoot": { "type": "boolean" },
+                "fields": { "type": "array" },
+                "relationships": { "type": "array" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api": {
+      "type": "object",
+      "required": ["endpoints"],
+      "properties": {
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "method", "path", "purpose"],
+            "properties": {
+              "id": { "type": "string" },
+              "module": { "type": "string" },
+              "method": { "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+              "path": { "type": "string" },
+              "purpose": { "type": "string" },
+              "reusedBy": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "auth": { "type": "object" },
+              "query": { "type": "object" },
+              "request": {},
+              "response": {},
+              "tags": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "externalCallRefs": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "serviceRefs": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "externalCalls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "provider", "direction", "purpose", "service"],
+        "properties": {
+          "id": { "type": "string" },
+          "provider": { "type": "string" },
+          "direction": { "enum": ["outbound", "inbound-webhook"] },
+          "trigger": { "type": "string" },
+          "purpose": { "type": "string" },
+          "service": { "type": "string" },
+          "timeoutMs": { "type": "integer" },
+          "retry": { "type": "object" },
+          "idempotency": { "type": "object" },
+          "secrets": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "class", "reason", "entities"],
+        "properties": {
+          "id": { "type": "string" },
+          "class": { "type": "string" },
+          "reason": { "type": "string" },
+          "alternativesConsidered": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "entities": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "requests": { "type": "object" },
+    "responses": { "type": "object" },
+    "implementationPlan": { "type": "object" }
+  }
+}

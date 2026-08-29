@@ -1,0 +1,119 @@
+feature:
+  id: integration-slug
+  title: Integration — Short title
+  status: draft
+  version: 0.1.0
+  source:
+    kind: webhook-inbound
+    # webhook-inbound | webhook-outbound | partner-api | public-api
+    base: none
+    updatedAt: YYYY-MM-DD
+    integrationRefs:
+      - id: provider-doc
+        type: provider-doc
+        path: docs/integrations/provider/events.md
+        syncedAt: null
+        status: pending
+      # - id: legacy-handler
+      #   type: legacy-code
+      #   path: <legacy-checkout>/app/Http/Controllers/WebhookController.php
+      #   syncedAt: null
+      #   status: pending
+    portalRefs: []
+    portalTestcaseRefs: []
+
+integrationBacklog: []
+# - id: IB-EVENT-002
+#   status: pending
+#   summary: Deferred event type
+#   expectedWhenDone:
+#     endpointIds: [integration.event-two]
+#     tags: ["#webhook-inbound"]
+
+beOnlyRequirements: []
+
+changeLog:
+  - id: CHG-INTEGRATION-001
+    source: integration-spec
+    summary: Initial partner/webhook contract.
+    impact:
+      - Define auth, endpoints, OpenAPI securitySchemes.
+    breaking: false
+
+decisions:
+  - id: DEC-INTEGRATION-001
+    summary: Verify HMAC before parsing body.
+    reason: Provider signature spec.
+
+tags: []
+# Round 1: domain only — #webhook-inbound, #call-external
+# Grill adds #gen:* — see api-codegen-readiness.md
+
+approval:
+  status: draft
+  reviewedBy: null
+  reviewedAt: null
+
+contexts:
+  portalLayout: none
+  routePrefixes: {}
+  actors:
+    - webhook-sender
+  auth:
+    - model: hmac-signature
+      header: X-Signature
+      notes: Document algorithm and secret env key in grill.
+
+modules:
+  - name: Integration
+    purpose: Inbound webhooks and partner-facing APIs.
+    entities:
+      - name: WebhookEvent
+        table: webhook_events
+        mode: Platform
+        aggregateRoot: false
+        fields:
+          - name: id
+            type: integer
+            readOnly: true
+          - name: external_id
+            type: string
+            purpose: Idempotency / dedup key from provider.
+
+api:
+  endpoints:
+    - id: integration.webhook
+      module: Integration
+      action: custom
+      method: POST
+      path: /webhooks/provider
+      purpose: Receive provider webhook events.
+      auth:
+        required: true
+        model: hmac-signature
+      idempotency:
+        required: true
+        key: external_event_id
+      request: WebhookPayload
+      response: WebhookAck
+      tags:
+        - "#webhook-inbound"
+
+externalCalls: []
+
+services: []
+
+requests:
+  WebhookPayload:
+    fields:
+      - name: id
+        type: string
+        rules:
+          - required
+
+responses:
+  WebhookAck:
+    fields:
+      - name: received
+        type: boolean
+

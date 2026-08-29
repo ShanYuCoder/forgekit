@@ -1,0 +1,11 @@
+# Generated from common-breadcrumb-flow.bundle.yaml — pnpm spec:split
+id: common-breadcrumb-flow
+legacyRef:
+  module: common/common
+  function: common-breadcrumb-flow
+  slice: slices.common-breadcrumb-flow
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

@@ -1,0 +1,13 @@
+# Generated from common-list-toolbar.bundle.yaml — pnpm spec:split
+id: common-list-toolbar
+inherits: admin-crud
+shell:
+  tag: "#shell: DataPage"
+  overrideCommonPattern: false
+patterns:
+  - "#pattern: CRUD"
+zones:
+  - id: main
+    label: Nội dung chính
+behavior: {}
+actions: []

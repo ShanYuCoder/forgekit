@@ -1,0 +1,66 @@
+schema: portal-feature-bundle/v1
+id: common-form-validation
+title: Common form validation
+status: draft
+owner: portal-team
+summary: Chuẩn vị trí, copy và state validation cho form admin portal.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  fieldErrors:
+    position: ngay dưới field/input liên quan
+    style: text destructive, cỡ nhỏ, không dùng alert global cho lỗi field đơn lẻ
+    testId: "{module}-{field}-error"
+  globalErrors:
+    position: trên form/card hoặc gần submit group
+    useFor:
+      - lỗi file import
+      - lỗi server không map được field
+      - timeout/expired session của flow import/preview
+    testId: "{module}-error-alert"
+  requiredMarker:
+    default: optional
+    whenUsed: dấu `*` đỏ cạnh label, không thêm text dài.
+  pendingState:
+    submitDisabled: true
+    labelCanChange: true
+    fieldsDisabled: chỉ khi action cần lock form để tránh double submit
+  copy:
+    source: Ưu tiên message Laravel ja/validation.php khi đã có legacy/API source.
+    language: Japanese UI copy.
+  acceptance:
+    - Field validation không gom hết lên đầu nếu field cụ thể đã xác định được.
+    - File/import/global validation được phép dùng alert trên card.
+    - Error testId đủ để E2E assert message quan trọng.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-form-validation
+    slice: slices.common-form-validation
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Chuẩn vị trí, copy và state validation cho form admin portal.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

@@ -1,0 +1,13 @@
+# Generated from common-pagination.bundle.yaml — pnpm spec:split
+id: common-pagination
+legacyRef:
+  module: common/common
+  function: common-pagination
+  slice: slices.common-pagination
+behaviors: []
+fields: []
+ui: []
+evidence:
+  - file: mairy-backend/resources/views/paginate/custom_paginate.blade.php
+  - file: mairy-backend/app/Helpers/helpers.php
+refs: {}

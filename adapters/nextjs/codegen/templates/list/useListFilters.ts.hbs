@@ -1,0 +1,50 @@
+'use client';
+
+import { useCallback, useMemo, useState } from 'react';
+
+/**
+ * {{title}} — filter config + search/reset logic (portal-gen).
+ */
+export function use{{entityPascal}}Filters() {
+  const [query, setQuery] = useState<Record<string, unknown>>({ per_page: {{defaultPageSize}} });
+
+  const filters = useMemo(
+    () => [
+{{#each filters}}
+      {
+        name: '{{name}}',
+        label: t('{{label}}'),
+        type: '{{type}}'{{#if placeholder}},
+        placeholder: t('{{placeholder}}'){{/if}}
+      }{{#unless @last}},{{/unless}}
+{{/each}}
+    ],
+    [],
+  );
+
+{{#if hasPerPageToolbar}}
+  const perPage = Number(query.per_page ?? {{defaultPageSize}});
+
+  const onPerPageChange = useCallback(
+    (value: number) => {
+      setQuery((current) => ({ ...current, per_page: value, page: 1 }));
+    },
+    [],
+  );
+{{/if}}
+
+  const resetQuery = useCallback(() => {
+    const nextQuery = { per_page: {{defaultPageSize}} };
+    setQuery(nextQuery);
+    return nextQuery;
+  }, []);
+
+  return {
+    query,
+    setQuery,
+    filters,
+    resetQuery{{#if hasPerPageToolbar}},
+    perPage,
+    onPerPageChange{{/if}}
+  };
+}

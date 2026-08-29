@@ -1,0 +1,27 @@
+---
+description: Unit Test — dev lane Vitest (/unit → /grill-unit)
+globs: "{src,composables,hooks,services,models,validations,utils,stores,tests/unit}/**/*.{ts,tsx,vue}"
+alwaysApply: false
+---
+
+# /unit · /grill-unit — Dev lane
+
+Skills: `.cursor/skills/unit/SKILL.md` · `.cursor/skills/grill-unit/SKILL.md`  
+Extract: `.cursor/extracts/portal-unit-workflow.md`, `portal-unit-test-tags.md`, `verify-gate.md`
+
+Canonical IR via `CODEGENKIT_DOCS_ROOT`; architecture → Docskit; cross-repo
+symbols → Platform DNA-wired `codegraph-<key>`; ArtifactGraph local-only.
+
+## `/unit`
+
+- Manifest-first: `unit.manifest.json` + `UNIT-HANDOFF.md`
+- Gọi `npm run codegen:unit` khi thiếu smoke; xử lý `needsUnit[]` / `#needs-unit-test:*`
+- Tách file test thiếu theo registry (1 source logic → 1 test file)
+- Logic only — **không** mount page/component; mock the selected adapter's
+  transport and framework globals at the unit boundary.
+- Done: `needsUnit` clear, vitest scoped green → **`/grill-unit`**
+
+## `/grill-unit`
+
+- Sau `/unit` — coverage scoped + map `reqIds`; **không** gọi `portal:unit-gen`
+- Thiếu file test → báo quay `/unit`

@@ -1,0 +1,11 @@
+# Generated from common-buttons.bundle.yaml — pnpm spec:split
+id: common-buttons
+legacyRef:
+  module: common/common
+  function: common-buttons
+  slice: slices.common-buttons
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

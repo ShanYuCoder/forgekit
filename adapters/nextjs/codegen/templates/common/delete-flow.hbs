@@ -1,0 +1,106 @@
+{{!-- Common Delete Flow Pattern --}}
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { Trash2 } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
+
+{{#if apiPath}}
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { client } from '@/lib/api-client'
+{{/if}}
+
+interface DeleteFlowProps {
+  id: string | number
+  name?: string
+  onSuccess?: () => void
+}
+
+export function DeleteFlow({ id, name, onSuccess }: DeleteFlowProps) {
+  const [open, setOpen] = useState(false)
+  const { toast } = useToast()
+  {{#if apiPath}}
+  const queryClient = useQueryClient()
+  
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      return client.delete(`{{{apiPath}}}/${id}`)
+    },
+    onSuccess: () => {
+      toast({
+        title: t('Deleted successfully'),
+        description: `The item ${name ? `"${name}" ` : ''}has been deleted.`,
+      })
+      setOpen(false)
+      queryClient.invalidateQueries({ queryKey: ['{{{apiKey}}}'] })
+      onSuccess?.()
+    },
+    onError: (error) => {
+      toast({
+        title: t('Delete failed'),
+        description: error.message || 'An unexpected error occurred.',
+        variant: 'destructive',
+      })
+    }
+  })
+  {{/if}}
+
+  const handleDelete = () => {
+    {{#if apiPath}}
+    deleteMutation.mutate()
+    {{else}}
+    console.warn('No API path provided for DeleteFlow. Implement custom delete logic here.')
+    toast({
+      title: t('Action required'),
+      description: 'API integration is missing for this delete flow.',
+    })
+    setOpen(false)
+    {{/if}}
+  }
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <Button variant="ghost" size="icon" className="text-destructive hover:bg-destructive/10">
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete the item
+            {name ? ` "${name}"` : ''} and remove its data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction 
+            onClick={(e) => {
+              e.preventDefault()
+              handleDelete()
+            }}
+            className="bg-destructive hover:bg-destructive/90"
+            {{#if apiPath}}disabled={deleteMutation.isPending}{{/if}}
+          >
+            {{#if apiPath}}
+              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            {{else}}
+              Delete
+            {{/if}}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}

@@ -1,0 +1,89 @@
+schema: portal-feature-bundle/v1
+id: common-status-chip
+title: Common status chip
+status: draft
+owner: portal-team
+summary: Chuẩn chip/tag trạng thái cho table, form detail và summary block.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  principles:
+    - Status không để text trần nếu cần người dùng nhận biết nhanh.
+    - Màu phải có ý nghĩa trạng thái, không dùng để trang trí.
+    - Chip luôn có text label, không chỉ dùng màu để đảm bảo accessibility.
+  tones:
+    success:
+      useFor:
+        - active
+        - sent
+        - valid
+        - connected
+      color: green
+    danger:
+      useFor:
+        - inactive
+        - failed
+        - error
+        - disconnected
+      color: red
+    warning:
+      useFor:
+        - pending
+        - sending
+        - attention
+      color: amber
+    info:
+      useFor:
+        - draft
+        - system
+        - informational
+      color: blue
+    muted:
+      useFor:
+        - disabled
+        - unknown
+        - none
+      color: gray
+  layout:
+    shape: rounded-full hoặc rounded-md nhỏ, phẳng, border nhẹ.
+    size: compact table chip, không làm row cao.
+    maxTextLength: 12-16 ký tự; text dài dùng truncate-tooltip.
+  testIds:
+    chip: "{module}-{field}-chip"
+    rowChip: "{module}-{field}-{id}-chip"
+  acceptance:
+    - Status trong table dùng chip nếu có trạng thái hữu hạn.
+    - Delete/destructive không dùng chip đỏ nếu không phải trạng thái lỗi/nguy hiểm.
+    - Chip nhiều trong một cell phải wrap có kiểm soát hoặc stack ngang, không làm row dài bất thường.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-status-chip
+    slice: slices.common-status-chip
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Chuẩn chip/tag trạng thái cho table, form detail và summary block.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

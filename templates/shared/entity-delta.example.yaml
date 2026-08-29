@@ -1,0 +1,45 @@
+# Entity delta example — inherits admin-crud (guinea pig template)
+
+schema: portal-feature-bundle/v1
+id: example-entity-list
+title: Example entity list (delta only)
+specOrigin: requirement
+
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataListPage"
+  zones:
+    - { id: search, label: Tìm kiếm }
+    - { id: toolbar, label: Toolbar, position: { after: search } }
+    - { id: table, label: Bảng }
+  behavior:
+    create: { enabled: true, surface: page }
+    delete: { enabled: true, mode: confirm_dialog }
+
+spec:
+  actors: [{ id: admin, legacyRoleCode: master }]
+  entities: [{ name: ExampleEntity, table: example_entities }]
+  requirements:
+    - id: REQ-EX-LIST-001
+      title: Admin list example entities
+      priority: must
+  ui:
+    routes:
+      - path: /admin/example-entities
+        pageTestId: admin-example-list-page
+  api:
+    endpoints:
+      - method: GET
+        path: /example-entities
+        action: list
+  acceptance:
+    - List dùng common list shell; chỉ delta columns/filters khác hotel.
+
+# gen: — dev-grill adds later
+
+legacy:
+  legacyRef: null
+
+review:
+  summary: Pilot delta — không copy hotel bundle.

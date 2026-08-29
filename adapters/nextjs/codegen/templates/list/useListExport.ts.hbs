@@ -1,0 +1,31 @@
+'use client';
+
+import { useCallback, useState } from 'react';
+import type { {{entityPascal}}Service } from '@/services/{{entity}}.service';
+
+/**
+ * {{title}} — export report logic (portal-gen).
+ * Only generated when spec includes export block.
+ */
+export function use{{entityPascal}}Export(service: {{entityPascal}}Service) {
+  const [exportMonth, setExportMonth] = useState(defaultExportMonth());
+  const [exportPending, setExportPending] = useState(false);
+
+  const exportOpenRateReport = useCallback(async () => {
+    setExportPending(true);
+    try {
+      await service.exportReport?.({ month: exportMonth });
+    } finally {
+      setExportPending(false);
+    }
+  }, [exportMonth, service]);
+
+  return { exportMonth, setExportMonth, exportPending, exportOpenRateReport };
+}
+
+function defaultExportMonth(): string {
+  const date = new Date();
+  date.setMonth(date.getMonth() - 1);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  return `${date.getFullYear()}-${month}`;
+}

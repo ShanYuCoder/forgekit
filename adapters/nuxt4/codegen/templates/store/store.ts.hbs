@@ -1,0 +1,30 @@
+import { defineStore } from 'pinia'
+import type { {{entityPascal}} } from '~/models/{{entity}}/{{entity}}.types'
+
+/**
+ * Pinia global store for {{entityPascal}}.
+ * Triggered via #use-store tag in docskit.
+ */
+export const use{{entityPascal}}Store = defineStore('{{entityCamel}}', {
+  state: () => ({
+    selectedItem: null as {{entityPascal}} | null,
+    items: [] as {{entityPascal}}[],
+    loading: false,
+  }),
+  actions: {
+    setSelectedItem(item: {{entityPascal}} | null) {
+      this.selectedItem = item
+    },
+    setItems(items: {{entityPascal}}[]) {
+      this.items = items
+    },
+    setLoading(loading: boolean) {
+      this.loading = loading
+    },
+    reset() {
+      this.selectedItem = null
+      this.items = []
+      this.loading = false
+    }
+  }
+})

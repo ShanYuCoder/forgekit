@@ -1,0 +1,123 @@
+{
+  "stack": "nuxt4-nest",
+  "mode": "brownfield",
+  "commands": {
+    "genDry": [
+      "codegenkit",
+      "gen:dry",
+      "--adapter=nuxt4",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "gen": [
+      "codegenkit",
+      "gen",
+      "--adapter=nuxt4",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "nestGenDry": [
+      "codegenkit",
+      "api-gen:dry",
+      "--adapter=nestjs",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "contractGenDry": [
+      "codegenkit",
+      "contract-gen:dry",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "registryValidate": [
+      "codegenkit",
+      "registry",
+      "--adapter=nuxt4"
+    ],
+    "nestRegistry": [
+      "codegenkit",
+      "api-registry",
+      "--adapter=nestjs"
+    ]
+  },
+  "registries": [
+    "registries/design.registry.json",
+    "registries/unit-test.registry.json",
+    "registries/e2e-test.registry.json",
+    "registries/nest-codegen.registry.json",
+    "registries/contract-field.registry.json"
+  ],
+  "gapSources": [
+    "**/generated/HANDOFF.md",
+    "**/generated/UNIT-HANDOFF.md",
+    "**/generated/codegen.manifest.json"
+  ],
+  "specRoots": [],
+  "templates": {
+    "root": "adapters/nuxt4/codegen/templates",
+    "engine": "hbs",
+    "note": "FE SSOT nuxt4 + BE nestjs in Codegenkit"
+  },
+  "dsl": {
+    "ssot": "product-repo",
+    "lanes": {
+      "fe": {
+        "registries": [
+          "registries/design.registry.json"
+        ],
+        "genKeys": [
+          "genDry",
+          "gen"
+        ],
+        "needsTags": [
+          "#needs-component",
+          "#needs-ui",
+          "#shell:",
+          "#widget:"
+        ],
+        "note": "Nuxt FE half — promote design registry"
+      },
+      "be": {
+        "registries": [
+          "registries/nest-codegen.registry.json",
+          "registries/contract-field.registry.json"
+        ],
+        "genKeys": [
+          "nestGenDry",
+          "contractGenDry"
+        ],
+        "needsTags": [
+          "#needs-endpoint",
+          "#needs-dto"
+        ],
+        "note": "Nest BE half — suggest_tags lane=be"
+      },
+      "unit": {
+        "registries": [
+          "registries/unit-test.registry.json"
+        ],
+        "genKeys": [],
+        "needsTags": [
+          "#needs-unit-test"
+        ]
+      },
+      "e2e": {
+        "registries": [
+          "registries/e2e-test.registry.json"
+        ],
+        "genKeys": [],
+        "needsTags": [
+          "#needs-testcase",
+          "#needs-e2e"
+        ]
+      }
+    }
+  },
+  "vocabularies": {
+    "registryTags": "artifactgraph/lexicon/registry-tags.en.txt"
+  }
+}

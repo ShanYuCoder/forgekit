@@ -1,0 +1,132 @@
+{
+  "stack": "nextjs",
+  "mode": "brownfield",
+  "commands": {
+    "genDry": [
+      "codegenkit",
+      "gen:dry",
+      "--adapter=nextjs",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "gen": [
+      "codegenkit",
+      "gen",
+      "--adapter=nextjs",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "unitGenDry": [
+      "codegenkit",
+      "unit-gen:dry",
+      "--adapter=nextjs",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "unitGen": [
+      "codegenkit",
+      "unit-gen",
+      "--adapter=nextjs",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "testcaseGenDry": [
+      "testkit",
+      "testcase:gen:dry",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "testcaseGen": [
+      "testkit",
+      "testcase:gen",
+      "--",
+      "--id",
+      "{spec}"
+    ],
+    "contractGenDry": [
+      "codegenkit",
+      "contract-gen:dry",
+      "--",
+      "--spec",
+      "{spec}"
+    ],
+    "registryValidate": [
+      "codegenkit",
+      "registry",
+      "--adapter=nextjs"
+    ],
+    "contractRegistry": [
+      "codegenkit",
+      "contract-registry"
+    ]
+  },
+  "registries": [
+    "registries/design.registry.json",
+    "registries/unit-test.registry.json",
+    "registries/e2e-test.registry.json",
+    "registries/contract-field.registry.json"
+  ],
+  "gapSources": [
+    "**/generated/HANDOFF.md",
+    "**/generated/UNIT-HANDOFF.md",
+    "**/generated/codegen.manifest.json"
+  ],
+  "specRoots": [],
+  "templates": {
+    "root": "adapters/nextjs/codegen/templates",
+    "engine": "hbs",
+    "note": "SSOT in Codegenkit; product has no root codegen/"
+  },
+  "dsl": {
+    "ssot": "product-repo",
+    "lanes": {
+      "fe": {
+        "registries": [
+          "registries/design.registry.json"
+        ],
+        "genKeys": [
+          "genDry",
+          "gen"
+        ],
+        "needsTags": [
+          "#needs-component",
+          "#needs-ui"
+        ]
+      },
+      "unit": {
+        "registries": [
+          "registries/unit-test.registry.json"
+        ],
+        "genKeys": [
+          "unitGenDry",
+          "unitGen"
+        ],
+        "needsTags": [
+          "#needs-unit-test"
+        ]
+      },
+      "e2e": {
+        "registries": [
+          "registries/e2e-test.registry.json"
+        ],
+        "genKeys": [
+          "testcaseGenDry",
+          "testcaseGen"
+        ],
+        "needsTags": [
+          "#needs-testcase",
+          "#needs-e2e"
+        ],
+        "note": "{spec} = hub id (W-|TC-|CMP-|suite) for --id"
+      }
+    }
+  },
+  "vocabularies": {
+    "registryTags": "artifactgraph/lexicon/registry-tags.en.txt"
+  }
+}

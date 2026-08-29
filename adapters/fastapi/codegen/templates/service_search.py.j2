@@ -1,0 +1,9 @@
+from app.modules.{{ module_package }}.{{ entity_snake }}.schemas.request import {{ entity_pascal }}SearchRequest
+from app.modules.{{ module_package }}.{{ entity_snake }}.services.store import _STORE
+
+
+class {{ entity_pascal }}SearchService:
+  async def search(self, query: {{ entity_pascal }}SearchRequest) -> tuple[list[dict], int]:
+    start = (query.page - 1) * query.per_page
+    items = _STORE[start : start + query.per_page]
+    return items, len(_STORE)

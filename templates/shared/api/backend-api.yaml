@@ -1,0 +1,188 @@
+feature:
+  id: feature-slug
+  title: Feature Title
+  status: draft
+  version: 0.1.0
+  source:
+    portalSpec: product/surfaces/.../CMP-*/<NN…>/ir/design.yaml
+    portalTestcases: https://github.com/raintr91/base_test/tree/main/cases
+    updatedAt: YYYY-MM-DD
+    portalRefs: []
+    # - id: feature-list
+    #   path: product/surfaces/.../CMP-*/<slug>/code/W-*/ir/spec.yaml
+    #   syncedAt: YYYY-MM-DD
+    #   status: synced   # synced | stale | pending
+    portalTestcaseRefs: []
+
+pendingTechDebt: []
+# - id: TD-FEATURE-EXPORT
+#   status: pending
+#   source: portal
+#   portalRef: feature-export
+#   portalRequirementIds: [REQ-...]
+#   summary: POST /entities/export — deferred to api-update
+#   expectedWhenDone:
+#     endpointIds: [feature.export]
+#     tags: ["#manual-service:export-entities"]
+#     action: custom
+
+beOnlyRequirements: []
+# BE-only changes — /api-update --be-only; feImpact: none
+
+changeLog:
+  - id: CHG-FEATURE-001
+    source: initial-backend-analysis
+    summary: Initial backend API contract.
+    impact:
+      - Create initial endpoint, entity, OpenAPI, and mock data plan.
+    breaking: false
+
+decisions:
+  - id: DEC-FEATURE-001
+    summary: Reuse detail endpoint for detail page and edit initial form data.
+    reason: Same permission, response shape, and lifecycle.
+
+tags: []
+
+approval:
+  status: draft
+  reviewedBy: null
+  reviewedAt: null
+
+codegen:
+  module: Admin
+  entity: FeatureEntity
+  pathModel: Tenant
+  sharedModel: true
+  profile: crud-standard
+  wire:
+    search: true
+    detail: true
+    create: true
+    update: false
+    delete: false
+    selectItems: false
+  skip: []
+  commands: []
+
+contexts:
+  portalLayout: single-portal
+  routePrefixes:
+    admin: /admin
+  actors:
+    - admin
+
+modules:
+  - name: Admin
+    purpose: Feature APIs for admin users.
+    entities:
+      - name: FeatureEntity
+        table: feature_entities
+        mode: Tenant
+        aggregateRoot: true
+        fields:
+          - name: id
+            type: integer
+            readOnly: true
+          - name: name
+            type: string
+            required: true
+        relationships: []
+
+api:
+  endpoints:
+    - id: feature.search
+      module: Admin
+      action: search
+      method: GET
+      path: /admin/features/list
+      purpose: List feature entities for the index screen.
+      reusedBy:
+        - /features
+      auth:
+        required: true
+        permissions: []
+      query:
+        pagination: true
+        filters:
+          - name
+        sorts:
+          - created_at
+        includes: []
+      request: null
+      response: FeatureEntityCollection
+      errorStorming:
+        - code: 401
+          tag: "#err:unauthorized"
+          reason: "User not authenticated"
+        - code: 403
+          tag: "#err:permission-denied"
+          reason: "User lacks permission to search features"
+      tags: []
+      externalCallRefs: []
+      serviceRefs: []
+
+externalCalls: []
+# Use only with #call-external.
+# Example:
+# - id: payment.createIntent
+#   provider: Stripe
+#   direction: outbound
+#   trigger: POST /admin/orders/{id}/pay
+#   purpose: Create payment intent.
+#   service: Modules\Order\Services\Payment\CreatePaymentIntentService
+#   timeoutMs: 10000
+#   retry:
+#     enabled: false
+#     reason: Payment retry requires idempotency.
+#   idempotency:
+#     required: true
+#     key: order_payment_attempt_id
+#   secrets:
+#     - PAYMENT_PROVIDER_SECRET
+
+services: []
+# Use only with #cross-entity-service.
+# Example:
+# - id: chain.activateWithDefaultStore
+#   class: Modules\Chain\Services\ActivateChainWithDefaultStoreService
+#   reason: Chain and Store are independent aggregates but must be activated in one operation.
+#   alternativesConsidered:
+#     - Eloquent relationship: not applicable
+#     - Event/Observer/Job: rejected because FE needs synchronous result
+#     - Split APIs: rejected because operation must be atomic
+#   entities:
+#     - Chain
+#     - Store
+
+requests:
+  FeatureEntityCreateRequest:
+    fields:
+      - name: name
+        type: string
+        rules:
+          - required
+          - string
+          - max:255
+
+responses:
+  FeatureEntityResource:
+    fields:
+      - name: id
+        type: integer
+      - name: name
+        type: string
+
+implementationPlan:
+  deprecated: Use codegen.commands — populated by pnpm api:gen:dry --write-spec
+  notes:
+    - Generators run in the BE checkout, not this docs hub.
+    - Codegen tags: .cursor/extracts/codegen/tags.md
+
+# pending only until member answers via AskQuestion — never a self-written decision string
+# - id: OQ-ownership
+#   status: pending
+#   question: "Platform vs Tenant ownership?"
+#   options: ["Platform", "Tenant"]
+#   recommended: "Tenant"
+#   decision: null

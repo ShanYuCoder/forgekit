@@ -1,0 +1,52 @@
+# Generated from common-table-action-column.bundle.yaml — pnpm spec:split
+id: common-table-action-column
+title: Common table action column
+status: draft
+owner: portal-team
+summary: "Chuẩn cột action trong table list: icon-only, fixed width, accessible và không làm row phình."
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+layout:
+  headerText: アクション hoặc blank nếu table quá hẹp nhưng phải có aria context.
+  width: fixed theo số action, không auto co text.
+  alignment: right hoặc center tùy table; mặc định right cho admin list.
+  overflow: nowrap
+actions:
+  iconOnly: true
+  requiredAttrs:
+    - data-testid
+    - aria-label
+    - title
+  order:
+    - view/detail
+    - edit/settings
+    - duplicate/copy
+    - delete/destructive
+variants:
+  view:
+    variant: ghost hoặc outline
+    icon: Eye
+  settings:
+    variant: outline
+    icon: Settings
+  loginAs:
+    variant: info hoặc outline
+    icon: LogIn
+    note: Nếu có nhiều user login-as, dùng pattern riêng thay vì nhồi text dài vào action column.
+  delete:
+    variant: destructive-ghost
+    icon: Trash2
+permissions:
+  hiddenWhenNotAllowed: true
+  disabledWhenPending: true
+  disabledNeedsTooltip: true nếu người dùng cần biết lý do
+testIds:
+  actionButton: "{module}-{action}-{id}"
+acceptance:
+  - Không có text label trong row action button.
+  - Delete icon hiển thị màu đỏ/destructive.
+  - Action column không wrap và không làm tăng row height.

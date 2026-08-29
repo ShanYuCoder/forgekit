@@ -1,0 +1,81 @@
+{{!-- Common Confirm Dialog Pattern --}}
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { CheckCircle2 } from 'lucide-react'
+
+interface ConfirmDialogProps {
+  title?: string
+  description?: string
+  confirmText?: string
+  cancelText?: string
+  onConfirm: () => void | Promise<void>
+  trigger?: React.ReactNode
+}
+
+export function ConfirmDialog({
+  title = 'Are you sure?',
+  description = 'This action will proceed with the requested operation.',
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  onConfirm,
+  trigger
+}: ConfirmDialogProps) {
+  const [open, setOpen] = useState(false)
+  const [isPending, setIsPending] = useState(false)
+
+  const handleConfirm = async () => {
+    try {
+      setIsPending(true)
+      await onConfirm()
+      setOpen(false)
+    } catch (error) {
+      console.error('Confirmation action failed', error)
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        {trigger || (
+          <Button variant="outline" className="gap-2">
+            <CheckCircle2 className="h-4 w-4" />
+            {confirmText}
+          </Button>
+        )}
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {description}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>{cancelText}</AlertDialogCancel>
+          <AlertDialogAction 
+            onClick={(e) => {
+              e.preventDefault()
+              handleConfirm()
+            }}
+            disabled={isPending}
+          >
+            {isPending ? 'Processing...' : confirmText}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}

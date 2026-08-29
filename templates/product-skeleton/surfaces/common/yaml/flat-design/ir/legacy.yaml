@@ -1,0 +1,11 @@
+# Generated from common-flat-design.bundle.yaml — pnpm spec:split
+id: common-flat-design
+legacyRef:
+  module: common/common
+  function: common-flat-design
+  slice: slices.common-flat-design
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

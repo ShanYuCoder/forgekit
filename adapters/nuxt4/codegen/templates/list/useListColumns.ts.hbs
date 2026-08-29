@@ -1,0 +1,21 @@
+import type { DataTableColumn } from '~/components/molecules/layout/useDataTableLogic'
+
+/**
+ * {{title}} — column definitions (portal-gen).
+ */
+export function use{{entityPascal}}Columns() {
+  const columns = computed<DataTableColumn[]>(() => [
+{{#each columns}}
+    {
+      key: '{{key}}',
+      title: t('{{title}}'){{#if sortable}},
+      sortable: true{{/if}}{{#if align}},
+      align: '{{align}}'{{/if}}
+    }{{#unless @last}},{{/unless}}
+{{/each}}
+  ])
+
+  const searchKeys = computed(() => columns.value.map((column) => column.key))
+
+  return { columns, searchKeys }
+}

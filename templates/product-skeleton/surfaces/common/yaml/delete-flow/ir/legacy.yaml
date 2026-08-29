@@ -1,0 +1,11 @@
+# Generated from common-delete-flow.bundle.yaml — pnpm spec:split
+id: common-delete-flow
+legacyRef:
+  module: common/common
+  function: common-delete-flow
+  slice: slices.common-delete-flow
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

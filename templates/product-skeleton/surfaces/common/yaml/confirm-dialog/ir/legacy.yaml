@@ -1,0 +1,11 @@
+# Generated from common-confirm-dialog.bundle.yaml — pnpm spec:split
+id: common-confirm-dialog
+legacyRef:
+  module: common/common
+  function: common-confirm-dialog
+  slice: slices.common-confirm-dialog
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}

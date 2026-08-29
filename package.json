@@ -1,0 +1,55 @@
+{
+  "name": "@platform/forgekit",
+  "version": "0.1.0",
+  "description": "Unified Local MCP Toolkit (Graph, DNA, Docs, Test, Codegen)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "forgekit": "./bin/forgekit.mjs",
+    "forgekit-mcp": "./bin/forgekit-mcp.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raintr91/forgekit.git"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "adapters",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "mcp": "node bin/forgekit-mcp.mjs",
+    "cli": "node bin/forgekit.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3",
+    "handlebars": "^4.7.8",
+    "ajv": "^8.20.0",
+    "cytoscape": "^3.34.0",
+    "cytoscape-cose-bilkent": "^4.1.0",
+    "ejs": "^3.1.10",
+    "mermaid": "^11.16.0",
+    "vitepress": "latest",
+    "vitepress-mermaid-renderer": "^1.1.28",
+    "vitepress-plugin-mermaid": "^2.0.17",
+    "vue": "^3.4.21",
+    "@braintree/sanitize-url": "^7.1.2",
+    "dayjs": "^1.11.21",
+    "debug": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "typescript": "^5.9.0",
+    "tsx": "^4.23.1"
+  }
+}

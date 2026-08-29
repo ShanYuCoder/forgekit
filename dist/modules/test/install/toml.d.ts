@@ -1,0 +1,6 @@
+export declare function buildTomlTable(header: string, values: Record<string, string | string[]>): string;
+export declare function upsertTomlTable(content: string, header: string, block: string): string;
+export declare function removeTomlTable(content: string, header: string): {
+    content: string;
+    removed: boolean;
+};

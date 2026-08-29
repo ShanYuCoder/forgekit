@@ -1,0 +1,33 @@
+---
+description: Registry-backed FE vocabulary for generated and handoff code
+globs: "{app,src,pages,components,composables,hooks,services,models,validations,registries}/**/*.{vue,ts,tsx,json}"
+alwaysApply: false
+---
+
+# Design vocabulary
+
+SSOT: `registries/design.registry.json` · validate with `codegenkit registry`.
+
+## Hashtags (grill → `tags:`)
+
+| Prefix | Example |
+|--------|---------|
+| `#shell:` | Registry-defined page/list shell |
+| `#pattern:` | `CRUD` |
+| `#ui:` | shadcn primitive |
+| `#widget:` | form field |
+| `#render:` | `text`, `chip` |
+| `#style:` | `compact`, `flat` |
+| `#needs-ui:` | planned widget — prototype implements |
+| `#split-hook:` | `columns`, `filters`, `export`, `form-sections` — hint codegen to split |
+
+Shell names and custom-template behavior are adapter/product registry data. Do
+not assume a Nuxt `.vue` shell in a Next.js target or vice versa.
+
+## Grill
+
+1. BA bullet → `lookupAlias()` in registry
+2. Low confidence → ask member
+3. `npm run codegen:dry -- --id …` must pass.
+
+Do not invent component names outside the selected adapter registry.

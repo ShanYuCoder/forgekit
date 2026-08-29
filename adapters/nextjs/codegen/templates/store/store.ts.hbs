@@ -1,0 +1,28 @@
+import { create } from 'zustand';
+import type { {{entityPascal}} } from '@portal/models/{{entity}}';
+
+export interface {{entityPascal}}State {
+  selectedItem: {{entityPascal}} | null;
+  items: {{entityPascal}}[];
+  loading: boolean;
+
+  setSelectedItem: (item: {{entityPascal}} | null) => void;
+  setItems: (items: {{entityPascal}}[]) => void;
+  setLoading: (loading: boolean) => void;
+  reset: () => void;
+}
+
+/**
+ * Zustand global store for {{entityPascal}}.
+ * Triggered via #use-store tag in docskit.
+ */
+export const use{{entityPascal}}Store = create<{{entityPascal}}State>()((set) => ({
+  selectedItem: null,
+  items: [],
+  loading: false,
+
+  setSelectedItem: (item) => set({ selectedItem: item }),
+  setItems: (items) => set({ items }),
+  setLoading: (loading) => set({ loading }),
+  reset: () => set({ selectedItem: null, items: [], loading: false }),
+}));

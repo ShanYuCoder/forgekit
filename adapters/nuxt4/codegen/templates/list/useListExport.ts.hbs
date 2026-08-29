@@ -1,0 +1,26 @@
+/**
+ * {{title}} — export report logic (portal-gen).
+ * Only generated when spec includes export block.
+ */
+export function use{{entityPascal}}Export(service: { exportReport?: (body: Record<string, unknown>) => Promise<unknown> }) {
+  const exportMonth = ref(defaultExportMonth())
+  const exportPending = ref(false)
+
+  async function exportOpenRateReport() {
+    exportPending.value = true
+    try {
+      await service.exportReport?.({ month: exportMonth.value })
+    } finally {
+      exportPending.value = false
+    }
+  }
+
+  return { exportMonth, exportPending, exportOpenRateReport }
+}
+
+function defaultExportMonth(): string {
+  const date = new Date()
+  date.setMonth(date.getMonth() - 1)
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  return `${date.getFullYear()}-${month}`
+}

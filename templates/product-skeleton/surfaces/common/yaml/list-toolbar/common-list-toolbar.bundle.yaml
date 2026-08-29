@@ -1,0 +1,86 @@
+schema: portal-feature-bundle/v1
+id: common-list-toolbar
+title: Common list toolbar
+status: draft
+owner: portal-team
+summary: Chuẩn toolbar action của list page, gồm total readonly button, action chính/phụ, bulk action và per-page control.
+specOrigin: legacy
+grillStatus:
+  bqaFacts: draft
+  bqaOpen: draft
+  dev: draft
+  full: not_required
+spec:
+  layout:
+    position: below search filter, above table
+    style:
+      - Nằm cùng nền list block, không bọc card/nền trắng riêng.
+      - Dùng flex wrap, gap nhỏ, per-page đẩy sang phải khi đủ rộng.
+      - Thiết kế phẳng, không shadow hoặc gradient.
+  items:
+    total:
+      text: 合計 {count}
+      variant: complete
+      color: "#48b0f7"
+      behavior: readonly button-style, không clickable
+      badgePolicy: Không bọc số bằng badge bo riêng; số nằm cùng text/nền button.
+      testId: "{module}-total-btn"
+    primaryAction:
+      examples:
+        - 新規作成
+        - CSVアップロード
+        - インポート
+      variant: complete
+      icon: required khi action rõ nghĩa và có icon phù hợp
+    bulkAction:
+      position: after primary actions
+      disabledWhen: no selection
+      destructive: true nếu là delete
+    perPage:
+      position: right
+      labels:
+        before: 表示
+        after: 件 / ページ
+      pageSummary:
+        text: "{currentPage} / {totalPages}"
+        position: cạnh per-page select trong toolbar/header table góc phải
+        note: Đây là số trang hiện tại/tổng số trang, không đặt dưới pagination controls.
+      options:
+        - 20
+        - 40
+        - 80
+        - 100
+      testId: "{module}-per-page-select"
+  acceptance:
+    - Toolbar không trộn chung với search/clear button.
+    - Nút `合計` luôn đứng trước action chính nếu page có tổng số bản ghi.
+    - Per-page và page summary nằm trong toolbar/header table góc phải, không nằm dưới table.
+legacy:
+  legacyRef:
+    module: common/common
+    function: common-list-toolbar
+    slice: slices.common-list-toolbar
+  behaviors: []
+  fields: []
+  ui: []
+  evidence:
+    - file: mairy-backend/resources/views/common/show_perpage.blade.php
+  refs: {}
+design:
+  inherits: admin-crud
+  shell:
+    tag: "#shell: DataPage"
+    overrideCommonPattern: false
+  patterns:
+    - "#pattern: CRUD"
+  zones:
+    - id: main
+      label: Nội dung chính
+  behavior: {}
+  actions: []
+review:
+  summary: Chuẩn toolbar action của list page, gồm total readonly button, action chính/phụ, bulk action và per-page control.
+  layoutNotes: []
+_meta:
+  generatedBy: archived-legacy-converter
+  sourceRevision: null

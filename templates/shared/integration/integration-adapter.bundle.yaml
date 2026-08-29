@@ -1,0 +1,77 @@
+# SSOT — portal-feature-bundle/v1
+
+schema: portal-feature-bundle/v1
+id: factory-mes-example
+title: OT adapter example
+status: draft
+owner: integration-team
+summary: Adapter fast calls via httpx
+specOrigin: requirement
+
+grillStatus:
+  bqaFacts: pending
+  bqaOpen: pending
+  dev: pending
+  full: not_required
+
+contractRef:
+  fastClient: null # Set an online Git URL when the source repository is published.
+
+spec:
+  feature:
+    id: factory-mes-example
+    title: Adapter title
+    status: draft
+    version: 0.1.0
+  approval:
+    status: draft
+  api:
+    endpoints:
+      - id: mes.downtime
+        module: mes
+        action: getDowntime
+        method: GET
+        path: /plants/{plant_id}/downtime
+        response: PlantDowntimeResponse
+  responses:
+    PlantDowntimeResponse:
+      fields:
+        - name: plant_id
+          type: integer
+        - name: items
+          type: array
+          items:
+            - name: machine_id
+              type: string
+            - name: minutes
+              type: integer
+            - name: reason
+              type: string
+
+gen:
+  codegen:
+    module: mes
+    entity: PlantDowntime
+    profile: mes-downtime
+
+legacy:
+  legacyRef: null
+  behaviors: []
+  fields: []
+  ui: []
+  evidence: []
+  refs: {}
+
+design:
+  inherits: null
+  shell:
+    tag: "#shell: OtAdapter"
+  patterns: []
+  zones: []
+  behavior: {}
+  actions: []
+
+review:
+  summary: ""
+  layoutNotes: []
+

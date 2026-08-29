@@ -1,0 +1,11 @@
+# Generated from common-feedback.bundle.yaml — pnpm spec:split
+id: common-feedback
+legacyRef:
+  module: common/common
+  function: common-feedback
+  slice: slices.common-feedback
+behaviors: []
+fields: []
+ui: []
+evidence: []
+refs: {}
