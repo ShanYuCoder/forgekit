@@ -16,13 +16,13 @@ hero:
 features:
   - title: Hệ thống Platform
     details: Kiến trúc tổng quan về bộ khung 4 tầng Frontend/Backend và các concept quan trọng.
-    link: /platform/guide/platform-base-overview
+    link: /1-guide/system-doc-structure
   - title: Workflow & Pipeline
     details: Luồng phát triển, CI/CD, quy trình Test và đảm bảo chất lượng hệ thống (Grill, E2E).
-    link: /platform/toolchain/PIPELINE-AND-DESIGN
+    link: /2-lifecycle/overview
   - title: AI & Codegen
     details: Tích hợp Prompt templates, YAML/Markdown workflow dành cho AI Assistant.
-    link: /platform/guide/yaml-markdown-ai-workflow
+    link: /1-guide/ai-workflow
 ---
 
 <br/>

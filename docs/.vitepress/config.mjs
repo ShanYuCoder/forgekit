@@ -8,7 +8,7 @@ export default withMermaid(
     themeConfig: {
       nav: [
         { text: 'Home', link: '/' },
-        { text: 'Platform', link: '/platform/' }
+        { text: 'Guide', link: '/1-guide/getting-started'}
       ],
       sidebar: [
         {
