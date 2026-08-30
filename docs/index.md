@@ -14,15 +14,27 @@ hero:
       link: https://github.com/ShanYuCoder/forgekit
 
 features:
-  - title: Hệ thống Platform
-    details: Kiến trúc tổng quan về bộ khung 4 tầng Frontend/Backend và các concept quan trọng.
-    link: /1-guide/system-doc-structure
-  - title: Workflow & Pipeline
-    details: Luồng phát triển, CI/CD, quy trình Test và đảm bảo chất lượng hệ thống (Grill, E2E).
+  - title: 1. Guide & Khái niệm
+    details: Các khái niệm cốt lõi, công cụ (Toolkits) và tư duy làm việc với AI Workflow.
+    link: /1-guide/getting-started
+  - title: 2. Lifecycle (Vòng Đời)
+    details: Luồng phát triển xuyên suốt từ lúc lên Architecture, Design đến Code và Grill.
     link: /2-lifecycle/overview
-  - title: AI & Codegen
-    details: Tích hợp Prompt templates, YAML/Markdown workflow dành cho AI Assistant.
-    link: /1-guide/ai-workflow
+  - title: 3. Artifacts & Sự Kiện
+    details: Cấu trúc thư mục vật lý, cơ chế cắt gộp Bundle/IR và quản lý Tags/Markers.
+    link: /3-artifacts/layout
+  - title: 4. Contracts & Tiêu Chuẩn
+    details: Giao thức giao tiếp giữa Frontend (Portal) và Backend (FastAPI), Field Registry.
+    link: /4-contracts/portal-to-fastapi
+  - title: 5. Kiểm Thử (Testing)
+    details: Quy ước TestIDs và kiểm thử ngữ nghĩa (Semantic Assertions) dùng cho Playwright E2E.
+    link: /5-testing/e2e-testids
+  - title: 6. Tra Cứu Nhanh (Reference)
+    details: Sổ tay tra cứu lệnh Forgekit CLI, hệ thống Prompt Templates, và Repo Split Map.
+    link: /6-reference/cli-and-commands
+  - title: 7. Kiến Trúc Technical
+    details: Kiến trúc kỹ thuật sâu bên dưới của Portal (Nuxt 4) và vòng đời của một Page.
+    link: /7-architecture/portal-architecture
 ---
 
 <br/>
