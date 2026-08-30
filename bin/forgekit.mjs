@@ -436,14 +436,36 @@ async function main() {
   const vitepressDocsSource = path.join(forgekitRoot, 'engines', 'docs', 'vitepress');
   if (fs.existsSync(vitepressDocsSource)) {
     let destDocVp;
+    let destDocsRoot;
     if (selectedType === 'Document') {
+       destDocsRoot = process.cwd();
        destDocVp = path.join(process.cwd(), '.vitepress');
     } else if (feDocRoot) {
+       destDocsRoot = path.join(process.cwd(), feDocRoot);
        destDocVp = path.join(process.cwd(), feDocRoot, '.vitepress');
     }
-    if (destDocVp) {
+    if (destDocVp && destDocsRoot) {
        console.log(pc.blue(`  + Syncing .vitepress configs to ${path.relative(process.cwd(), destDocVp) || '.vitepress'}...`));
        copyRecursive(vitepressDocsSource, destDocVp);
+       
+       const baseDocsSource = path.join(forgekitRoot, 'templates', 'product-skeleton');
+       if (fs.existsSync(baseDocsSource)) {
+          console.log(pc.blue(`  + Initializing Base Docs Structure to ${path.relative(process.cwd(), destDocsRoot) || '.'}...`));
+          if (!fs.existsSync(destDocsRoot)) fs.mkdirSync(destDocsRoot, { recursive: true });
+          const items = fs.readdirSync(baseDocsSource, { withFileTypes: true });
+          for (const item of items) {
+             const srcPath = path.join(baseDocsSource, item.name);
+             const destPath = path.join(destDocsRoot, item.name);
+             if (!fs.existsSync(destPath)) {
+                if (item.isDirectory()) {
+                  copyRecursive(srcPath, destPath);
+                } else {
+                  fs.copyFileSync(srcPath, destPath);
+                }
+                console.log(`    - Created ${item.name}`);
+             }
+          }
+       }
     }
   }
 

@@ -8,12 +8,18 @@ extractBundle: architecture-core
 **Target Paths:** resolve with `.cursor/extracts/common-scope.md` §4 — not a free `[Target Path]/Common/Business processes`.
 **Guidelines:** Use standard MD + Mermaid `flowchart` or `sequenceDiagram`. Model the process by business actions on surfaces, not by repo/service topology.
 
-**Placement (mandatory):**
-1. Name the consumers (surfaces / CMP / cluster).
-2. Write `FLOW-*.md` in that LCA `common/processes/` **or** in `architecture/03-business-process/` only if the flow is org/cross-surface catalog.
-3. Module-internal flow → `product/surfaces/<surface>/<CMP-id>/common/processes/FLOW-*.md`.
-4. Cluster-only → `…/<CMP-id>/<NN>/common/processes/FLOW-*.md`.
-5. Never write FLOW next to a single function bundle. VitePress/publish menu uses **Mã quy trình** only (vd `FLOW-PORTAL-AUTH-CHANGE`), not the H1.
+**Placement (mandatory): Business-process MUST be documented across 2 distinct perspectives:**
+1. **When co-activated with `/common` skill:**
+   - Write pure Markdown describing the business logic at the UI surface.
+   - The deeper the path goes into the module structure, the more exhaustively you must describe every detail and edge case of the UI flow.
+   - Placement: `surfaces/**/common/` (e.g. `surfaces/<surface>/<CMP-id>/common/processes/FLOW-*.md` or `surfaces/<surface>/<CMP-id>/<NN>/common/processes/FLOW-*.md`).
+2. **When co-activated with `/architecture` skill:**
+   - Focus on pure technical Mermaid sequence diagrams (`sequenceDiagram`).
+   - Dig deep into backend services, database interactions, external APIs, and 3rd-party services (e.g., S3, Redis).
+   - Placement: `architecture/03-business-process/`.
+
+**Additional routing rules:**
+- Never write FLOW next to a single function bundle. VitePress/publish menu uses **Mã quy trình** only (vd `FLOW-PORTAL-AUTH-CHANGE`), not the H1.
 
 ## Process meaning
 - Start from the business question: who is doing what on which surface/channel.

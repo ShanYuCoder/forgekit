@@ -4,11 +4,23 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { buildSurfacesSidebarItems, SKIP_NAV_DIRS, markdownNavText } from './surfaces-nav.mjs'
 
+import { fileURLToPath } from 'node:url'
+
 const projectRoot = process.cwd()
-const hasProductArchitecture = fs.existsSync(path.join(projectRoot, 'product', 'architecture'))
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const docsDir = path.resolve(__dirname, '..')
+
+const hasProductArchitecture = fs.existsSync(path.join(projectRoot, 'product', 'architecture')) || fs.existsSync(path.join(docsDir, 'product', 'architecture'))
 const archPrefix = hasProductArchitecture ? '/product/architecture' : '/architecture'
 
+const hasProductOverview = fs.existsSync(path.join(projectRoot, 'product', 'overview')) || fs.existsSync(path.join(docsDir, 'product', 'overview'))
+const overviewPrefix = hasProductOverview ? '/product/overview' : '/overview'
+
+const hasProductSurfaces = fs.existsSync(path.join(projectRoot, 'product', 'surfaces')) || fs.existsSync(path.join(docsDir, 'product', 'surfaces'))
+const surfacesPrefix = hasProductSurfaces ? '/product/surfaces' : '/surfaces'
+
 function buildRecursiveSidebar(dirPath: string, urlPrefix: string): any[] {
+// ... existing buildRecursiveSidebar body ...
   if (!fs.existsSync(dirPath)) return []
   try {
     const entries = fs.readdirSync(dirPath, { withFileTypes: true })
@@ -95,14 +107,20 @@ function attachGeneratedDocs(dirPath: string, urlPrefix: string, items: any[]) {
   }
 }
 
-function getSurfacesSidebar(root: string) {
-  const surfacesDir = path.join(root, 'product', 'surfaces')
-  return buildSurfacesSidebarItems(surfacesDir, '/product/surfaces/')
+function getSurfacesSidebar(root: string, docsDir: string) {
+  let surfacesDir = path.join(root, 'product', 'surfaces')
+  if (!fs.existsSync(surfacesDir) && (fs.existsSync(path.join(docsDir, 'surfaces')) || fs.existsSync(path.join(root, 'surfaces')))) {
+    surfacesDir = fs.existsSync(path.join(docsDir, 'surfaces')) ? path.join(docsDir, 'surfaces') : path.join(root, 'surfaces')
+  }
+  return buildSurfacesSidebarItems(surfacesDir, `${surfacesPrefix}/`)
 }
 
-function getOverviewSidebar(root: string) {
-  const overviewDir = path.join(root, 'product', 'overview')
-  return buildRecursiveSidebar(overviewDir, '/product/overview/')
+function getOverviewSidebar(root: string, docsDir: string) {
+  let overviewDir = path.join(root, 'product', 'overview')
+  if (!fs.existsSync(overviewDir) && (fs.existsSync(path.join(docsDir, 'overview')) || fs.existsSync(path.join(root, 'overview')))) {
+    overviewDir = fs.existsSync(path.join(docsDir, 'overview')) ? path.join(docsDir, 'overview') : path.join(root, 'overview')
+  }
+  return buildRecursiveSidebar(overviewDir, `${overviewPrefix}/`)
 }
 
 function getBusinessProcessSidebarItems(root: string, prefix: string) {
@@ -214,32 +232,29 @@ export default withMermaid(
     themeConfig: {
       nav: [
         { text: 'Home', link: '/' },
-        { text: 'Start now', link: '/platform/guide/start-now' },
-        { text: 'Overview', link: '/product/overview/' },
-        { text: 'Surfaces', link: '/product/surfaces/' },
-        { text: 'Platform', link: '/platform/guide/' },
+        { text: 'Overview', link: `${overviewPrefix}/` },
+        { text: 'Surfaces', link: `${surfacesPrefix}/` },
       ],
       sidebar: [
         {
-          text: 'Start',
+          text: 'Readme',
           collapsed: false,
           items: [
-            { text: 'Start now', link: '/platform/guide/start-now' },
-            { text: 'Doc structure', link: '/platform/guide/SYSTEM-DOC-STRUCTURE' },
+            { text: 'Readme', link: '/README' },
           ],
         },
         {
           text: 'Overview',
           collapsed: false,
           items: [
-            { text: 'Overview', link: '/product/overview/' },
-            ...getOverviewSidebar(projectRoot)
+            { text: 'Overview', link: `${overviewPrefix}/` },
+            ...getOverviewSidebar(projectRoot, docsDir)
           ]
         },
         {
           text: 'Surfaces',
           collapsed: false,
-          items: getSurfacesSidebar(projectRoot),
+          items: getSurfacesSidebar(projectRoot, docsDir),
         },
         {
           text: 'Architecture',
@@ -277,56 +292,6 @@ export default withMermaid(
             },
             { text: 'Architecture Trace', link: '/ARCHITECTURE-TRACE' },
             { text: 'Legacy dynamics', link: '/product/legacy-dynamics/' },
-          ],
-        },
-        {
-          text: 'Platform',
-          collapsed: true,
-          items: [
-            {
-              text: 'Guide',
-              collapsed: true,
-              items: [
-                { text: 'Index', link: '/platform/guide/' },
-                { text: 'Overview', link: '/platform/guide/platform-base-overview' },
-                { text: 'Toolkits (MCP)', link: '/platform/guide/toolkits' },
-                { text: 'Team AI workflow', link: '/platform/guide/team-ai-workflow-slides' },
-                { text: 'YAML ↔ MD workflow', link: '/platform/guide/yaml-markdown-ai-workflow' },
-                { text: 'E2E Playwright', link: '/platform/guide/e2e-automation-playwright' },
-              ],
-            },
-            {
-              text: 'Toolchain',
-              collapsed: true,
-              items: [
-                { text: 'Index', link: '/platform/toolchain/' },
-                { text: 'Toolkits (MCP)', link: '/platform/guide/toolkits' },
-                { text: 'Full cycle', link: '/platform/toolchain/FULL-CYCLE-PIPELINE-DIAGRAM' },
-                { text: 'Design phase', link: '/platform/toolchain/DESIGN-PHASE-DIAGRAM' },
-                { text: 'Repo split map', link: '/platform/toolchain/REPO-SPLIT-MAP' },
-              ],
-            },
-            {
-              text: 'Bases',
-              collapsed: true,
-              items: [
-                {
-                  text: 'Portal git',
-                  link: 'https://github.com/raintr91/nuxt_4/blob/nuxt_v_3/docs/operational/PORTAL-CODEGEN.md',
-                },
-                {
-                  text: 'FastAPI git',
-                  link: 'https://github.com/raintr91/fast-api/blob/v3/docs/operational/FAST-API-QUICKSTART.md',
-                },
-                {
-                  text: 'Laravel API git',
-                  link: 'https://github.com/raintr91/lara12/blob/v3/docs/operational/BACKEND-API-QUICKSTART.md',
-                },
-                { text: 'Nest BE', link: 'https://github.com/raintr91/next_nest/blob/next_nest_v3/docs/operational/NEST-API-STRUCTURE.md' },
-                { text: 'Integration (git)', link: 'https://github.com/raintr91/integration' },
-                { text: 'Line client (git)', link: 'https://github.com/raintr91/winform' },
-              ],
-            },
           ],
         },
         {
