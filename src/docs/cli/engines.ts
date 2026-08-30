@@ -12,6 +12,9 @@ export type EngineName =
   | 'publish'
   | 'legacy_validate'
   | 'extract_i18n'
+  | 'openapi_render'
+  | 'openapi_build_ui'
+  | 'openapi_gen'
 
 const ENGINE_FILES: Record<EngineName, string> = {
   split: path.join('spec', 'split-bundle.mjs'),
@@ -23,6 +26,9 @@ const ENGINE_FILES: Record<EngineName, string> = {
   publish: path.join('docs', 'publish.mjs'),
   legacy_validate: path.join('spec', 'legacy-dynamics-validate.mjs'),
   extract_i18n: path.join('spec', 'extract-i18n.mjs'),
+  openapi_render: path.join('openapi', 'render-openapi.mjs'),
+  openapi_build_ui: path.join('openapi', 'build-openapi-ui.mjs'),
+  openapi_gen: path.join('openapi', 'gen-openapi.mjs'),
 }
 
 export interface EngineResult {
